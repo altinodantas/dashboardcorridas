@@ -326,59 +326,77 @@ var values = [
 ]
 
 
-let check_train = []
-
-check_train = values.filter(element => element[8] == 'Check')
-
-
-
 // Ploting charts
-creat_chart(check_train)
+create_chart(values)
+//create_chart_pace(values)
 treinos_por_local(values)
 treinos_por_tipo_bubble(values)
 
-// Getting info
-
-console.log(get_general_info(values))
-
-var info = get_general_info(values)
-var html = `<h1>${info.total_atividades}</h1>
-                    <span>Atividades</span>
-                    <hr />
-                    <p>${info.distancia} <b>km</b></p>
-                    <p>${info.elevacao} <b>metros</b></p>
-                    <h5><b>${info.horas}:${info.minutos}:${info.seg}</b></h5>
-                    
-                    <hr />
-                    Última Atividade <br/>
-                    <p>${info.ultimo_treino.local}</p>
-                    <p><b>${info.ultimo_treino.pace}</b>/km</p>
-                    <p>${convert_date(info.ultimo_treino.data)}</p>`
+create_summary(values)
+create_list(values)
 
 
-var reverse_values = values.reverse()
-
-$("#info").append(html);
-reverse_values.forEach(element => {
-
-    var tipo = ``
-
-    if (element[8] == "Check")
-        tipo = `<i class="bi bi-check-circle-fill" id="orange"></i> ${element[8]}`
-    else
-        tipo = `<i class="bi bi-circle-fill" id="viollet"></i> ${element[8]}`
-
-    var html = `<tr class="pt-3">
-                  <td class="pt-3">${convert_date(element[0])}</td>
-                  <td class="pt-3">${element[1]} km</td>
-                  <td class="pt-3">${element[2]}min ${element[3]}seg</td>
-                  <td class="pt-3">${element[7]}/km</td>
-                  <td class="pt-3">${tipo}</td>
-                  <td class="pt-3">${element[9]}</td>
-                </tr>`
-    $("tbody").append(html);
-
+$(document).ready(function () {
+    $('input[type=radio][name=btnradio]').change(function() {
+        if ($(this).attr('id') == 'pace_radio'){
+            $('#check_plot').html("");
+            create_chart_pace(values)
+        }else{
+            create_chart(values)
+        }
+    });
 })
+
+function create_summary(dados){
+
+    var info = get_general_info(dados)
+    
+    var html = `<h1>${info.total_atividades}</h1>
+                        <span>Atividades</span>
+                        <hr />
+                        <p>${info.distancia} <b>km</b></p>
+                        <p>${info.elevacao} <b>metros</b></p>
+                        <h5><b>${info.horas}:${info.minutos}:${info.seg}</b></h5>
+                        
+                        `
+                        // <hr />
+                        // Última Atividade <br/>
+                        // <p>${info.ultimo_treino.local}</p>
+                        // <p><b>${info.ultimo_treino.pace}</b>/km</p>
+                        // <p>${convert_date(info.ultimo_treino.data)}</p>
+                        
+    $("#info").append(html);
+    $('#resumo_data').html(convert_date(info.ultimo_treino.data))
+    $('.resumo_local').html(info.ultimo_treino.local)
+    $('.resumo_pace').html(info.ultimo_treino.pace + "<span>/km</span>")
+
+}
+
+function create_list(dados){
+
+    var reverse_values = dados.slice().reverse();
+    
+    reverse_values.forEach(element => {
+    
+        var tipo = ``
+    
+        if (element[8] == "Check")
+            tipo = `<i class="bi bi-check-circle-fill" id="orange"></i> ${element[8]}`
+        else
+            tipo = `<i class="bi bi-circle-fill" id="viollet"></i> ${element[8]}`
+    
+        var html = `<tr class="pt-3">
+                      <td class="pt-3">${convert_date(element[0])}</td>
+                      <td class="pt-3">${element[1]} km</td>
+                      <td class="pt-3">${element[2]}min ${element[3]}seg</td>
+                      <td class="pt-3">${element[7]}/km</td>
+                      <td class="pt-3">${tipo}</td>
+                      <td class="pt-3">${element[9]}</td>
+                    </tr>`
+        $("tbody").append(html);
+    
+    })
+}
 
 function get_general_info(dados) {
 
@@ -418,8 +436,6 @@ function get_general_info(dados) {
         "seg": seg
     }
 }
-
-console.log(convert_date('06/02/2023'))
 
 function convert_date(date) {
 
@@ -471,8 +487,152 @@ function convert_date(date) {
     return `${dia} ${mes} ${ano}`
 }
 
+function create_chart_pace(dados) {
 
-function creat_chart(result) {
+    var result = dados.slice(-30)
+
+    let dias = []
+    let pace = []
+    let minutes = []
+    let texto = []
+    let avg_values = []
+    let sum_paces = 0
+
+    result.forEach(element => {
+        pace.push(parseFloat(element[6]));
+        dias.push(element[0]);
+        // minutes.push(parseInt(element[2]) + parseInt(element[3]) / 60);
+        texto.push(`${convert_date(element[0])}<br><b>Tempo total:</b> ${element[2]}min${element[3]}seg<br>
+<b>Pace:</b> ${element[7]}/km<br>
+<b>Distância: </b>${element[1]} km`);
+        sum_paces += parseFloat(element[6]);
+    })
+
+    var avg = sum_paces / dias.length
+
+    console.log(avg)
+    var pace_f = `${parseInt(avg / 60)}:${parseInt(avg % 60)}`
+
+    for (i = 0; i < pace.length; i++){
+        avg_values.push(avg)
+    }
+
+
+    var desempenho = '';
+    var desempenho_cor = '';
+    // var diff = parseInt((minutes[minutes.length - 2] -  minutes[minutes.length - 1]) * 60)
+
+    // if (diff > 0){
+    //     desempenho = `<b>progresso</b><br>${diff}seg`;
+    //     desempenho_cor = '#6dae8d'
+    // } else {
+
+    //     if(diff < 0){
+    //         desempenho = `<b>regresso</b><br>${Math.abs(diff)}seg`;
+    //         desempenho_cor = '#ff0000'
+    //     } else {
+    //         desempenho = `<b>sem variação</b>`;
+    //         desempenho_cor = '#6639e9'
+    //     }
+
+    // }
+
+
+    var treinos = {
+        x: dias,
+        y: pace,
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: {
+            size: 12
+        },
+        line: {
+            width: 5,
+            shape: 'spline',
+            color: 'rgb(108, 54, 241)'
+        },
+        name: 'Pace',
+        hovertemplate: '%{text}<extra></extra>',
+        text: texto
+    };
+
+    var media = {
+        x: dias,
+        y: avg_values,
+        type: 'scatter',
+        mode: 'lines',
+        line: {
+            width: 3,
+            shape: 'spline',
+            color: '#ee8636',
+            dash: 'dot'
+        },
+        name: 'média',
+        hovertemplate: `Pace: ${pace_f}/km<extra></extra>`,
+    };
+
+    var data = [media, treinos];
+
+    var layout = {
+
+        yaxis: {
+            autorange: true,
+            // range: [11, 16],
+            type: 'linear',
+            automargin: true,
+            title: 'Pace médio (seg)'
+        },
+        xaxis: {
+            automargin: true,
+            showgrid: false,
+            tickcolor: '#000'  
+        },
+
+        showlegend: true,
+        legend: {
+            orientation: 'h',
+            x: 0.35,
+            y: 1.1
+        },
+        margin: {
+            l: 70,
+            r: 50,
+            b: 50,
+            t: 50,
+            pad: 10
+        },
+        title: false,
+        annotations: [
+            {
+              x: treinos.x[treinos.x.length -1], 
+              y: treinos.y[treinos.x.length -1] + 0.5,
+              xref: 'x',
+              yref: 'y',
+              text: desempenho,
+              showarrow: false,
+              arrowhead: 1,
+              ax: 0,
+              ay: -40,
+              font: {
+                family: 'Nunito, sans-serif',
+                size: 14,
+                color: desempenho_cor
+              }
+            }
+          ]
+
+    };
+
+    Plotly.newPlot('check_plot', data, layout, {
+        displayModeBar: false
+    });
+
+}
+
+function create_chart(dados) {
+
+    var result = dados.filter(element => element[8] == 'Check')
+
     let x_ = []
     let y_ = []
     let minutes = []
@@ -485,7 +645,27 @@ function creat_chart(result) {
         sec.push(element[2] + "min" + element[3] + "seg")
     })
 
-    var trenos = {
+    var desempenho = '';
+    var desempenho_cor = '';
+    var diff = parseInt((minutes[minutes.length - 2] -  minutes[minutes.length - 1]) * 60)
+
+    if (diff > 0){
+        desempenho = `<b>progresso</b><br>${diff}seg`;
+        desempenho_cor = '#6dae8d'
+    } else {
+
+        if(diff < 0){
+            desempenho = `<b>regresso</b><br>${Math.abs(diff)}seg`;
+            desempenho_cor = '#ff0000'
+        } else {
+            desempenho = `<b>sem variação</b>`;
+            desempenho_cor = '#6639e9'
+        }
+
+    }
+
+
+    var treinos = {
         x: x_,
         y: minutes,
         type: 'scatter',
@@ -498,7 +678,7 @@ function creat_chart(result) {
             shape: 'spline',
             color: 'rgb(108, 54, 241)'
         },
-        name: 'treinos',
+        name: 'Checkpoints',
         hovertemplate: 'tempo: %{text}<extra></extra>',
         text: sec
     };
@@ -516,7 +696,7 @@ function creat_chart(result) {
         hovertemplate: 'tempo: %{y:.0f}min<extra></extra>',
     };
 
-    var data = [trenos, meta];
+    var data = [treinos, meta];
 
     var layout = {
 
@@ -527,7 +707,9 @@ function creat_chart(result) {
             automargin: true
         },
         xaxis: {
-            automargin: true
+            automargin: true,
+            showgrid: false,
+            tickcolor: '#000'  
         },
 
         showlegend: true,
@@ -543,7 +725,25 @@ function creat_chart(result) {
             t: 50,
             pad: 10
         },
-        title: false
+        title: false,
+        annotations: [
+            {
+              x: treinos.x[treinos.x.length -1], 
+              y: treinos.y[treinos.x.length -1] + 0.5,
+              xref: 'x',
+              yref: 'y',
+              text: desempenho,
+              showarrow: false,
+              arrowhead: 1,
+              ax: 0,
+              ay: -40,
+              font: {
+                family: 'Nunito, sans-serif',
+                size: 14,
+                color: desempenho_cor
+              }
+            }
+          ]
 
     };
 
@@ -567,8 +767,6 @@ function treinos_por_local(dados) {
 
     var quantidade_ativiades = Object.values(dict);
     var locais = Object.keys(dict);
-
-    var qtd_norm = quantidade_ativiades.map(element => element / dados.length)
 
     var data = [{
         values: quantidade_ativiades,

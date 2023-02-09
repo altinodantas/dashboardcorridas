@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;600;800&display=swap');
+
 body {
     background-color: #fafafa;
     font-family: 'Nunito', sans-serif;
@@ -9,14 +11,14 @@ body {
     background: #fff;
     border-radius: 8px;
     box-shadow: rgba(109, 105, 105, 0.15) 4px 4px 25px 0px;
-    /* overflow: hidden; */
+    overflow: hidden;
     padding: 15px;
 }
 
 .block h3 {
 
-    font-weight: bold;
-    font-size: 1.4rem;
+    font-weight: 600;
+    font-size: 1.3rem;
     margin: 10px;
     text-align: left;
 
@@ -24,7 +26,7 @@ body {
 
 .block h4 {
 
-    font-weight: bolder;
+    font-weight: 600;
     font-size: 1.2rem;
     margin: 10px;
     text-align: left;
@@ -81,3 +83,20 @@ a.anchor {
     top: -120px;
     visibility: hidden;
 }
+
+.resumo_dark_block {
+    background-color: #6639e9;
+    color: #fff;
+    margin: -15px;
+    padding: 10px;
+}
+
+.resumo_text {
+    font-size: 0.8rem;
+}
+.resumo_data { text-align: right;}
+.resumo_ultimo { text-align: left;}
+.resumo_local_icon {font-size: 2rem; margin-bottom: 0px; margin-top: 5px;}
+.resumo_local { font-size: 1.2rem; font-weight: 300; margin: 0;}
+.resumo_pace {font-size: 2.4rem; font-weight: bolder; margin: -8px;}
+.resumo_pace span{font-size: 1.2rem; font-weight: 200;}
