@@ -1,356 +1,493 @@
-var values = [
-    [
-        "01/12/2022",
-        "1.89",
-        "17",
-        "58",
-        "31",
-        "18:45",
-        "570.37",
-        "9:30",
-        "Livre",
-        "Perto de casa"
-    ],
-    [
-        "07/12/2022",
-        "2.79",
-        "26",
-        "34",
-        "14",
-        "17:26",
-        "571.33",
-        "9:31",
-        "Livre",
-        "Alphaville SC"
-    ],
-    [
-        "12/12/2022",
-        "2.7",
-        "30",
-        "0",
-        "35",
-        "17:34",
-        "666.67",
-        "11:7",
-        "Livre",
-        "Perto de casa"
-    ],
-    [
-        "14/12/2022",
-        "3.32",
-        "31",
-        "13",
-        "48",
-        "17:10",
-        "564.16",
-        "9:24",
-        "Livre",
-        "Perto de casa"
-    ],
-    [
-        "19/12/2022",
-        "2.1",
-        "16",
-        "44",
-        "0",
-        "7:57",
-        "478.10",
-        "7:58",
-        "Livre",
-        "Av. Arena Sol"
-    ],
-    [
-        "21/12/2022",
-        "2.13",
-        "16",
-        "6",
-        "3",
-        "7:10",
-        "453.52",
-        "7:34",
-        "Livre",
-        "Av. Arena Sol"
-    ],
-    [
-        "23/12/2022",
-        "2.1",
-        "15",
-        "18",
-        "3",
-        "7:01",
-        "437.14",
-        "7:17",
-        "Livre",
-        "Av. Arena Sol"
-    ],
-    [
-        "24/12/2022",
-        "2.11",
-        "15",
-        "20",
-        "0",
-        "19:12",
-        "436.02",
-        "7:16",
-        "Livre",
-        "Av. Arena Sol"
-    ],
-    [
-        "26/12/2022",
-        "2.1",
-        "14",
-        "45",
-        "3",
-        "6:58",
-        "421.43",
-        "7:1",
-        "Livre",
-        "Av. Arena Sol"
-    ],
-    [
-        "28/12/2022",
-        "2.1",
-        "14",
-        "26",
-        "3",
-        "7:08",
-        "412.38",
-        "6:52",
-        "Livre",
-        "Av. Arena Sol"
-    ],
-    [
-        "31/12/2022",
-        "2.1",
-        "14",
-        "17",
-        "3",
-        "9:11",
-        "408.10",
-        "6:48",
-        "Livre",
-        "Av. Arena Sol"
-    ],
-    [
-        "02/01/2023",
-        "2.1",
-        "14",
-        "11",
-        "0",
-        "7:21",
-        "405.24",
-        "6:45",
-        "Livre",
-        "Av. Arena Sol"
-    ],
-    [
-        "04/01/2023",
-        "5.5",
-        "42",
-        "24",
-        "39",
-        "6:58",
-        "462.55",
-        "7:43",
-        "Intervalado",
-        "Perto de casa"
-    ],
-    [
-        "06/01/2023",
-        "5.5",
-        "52",
-        "2",
-        "71",
-        "15:48",
-        "567.64",
-        "9:28",
-        "Subida",
-        "Alphaville SC"
-    ],
-    [
-        "08/01/2023",
-        "2.1",
-        "15",
-        "52",
-        "31",
-        "20:14",
-        "453.33",
-        "7:33",
-        "Livre",
-        "Parque MVJ"
-    ],
-    [
-        "10/01/2023",
-        "2.1",
-        "14",
-        "12",
-        "0",
-        "17:51",
-        "405.71",
-        "6:46",
-        "Check",
-        "Av. Arena Sol"
-    ],
-    [
-        "12/01/2023",
-        "6.6",
-        "53",
-        "0",
-        "11",
-        "7:11",
-        "481.82",
-        "8:2",
-        "Intervalado",
-        "Av. Arena Sol"
-    ],
-    [
-        "16/01/2023",
-        "3.21",
-        "29",
-        "0",
-        "45",
-        "7:04",
-        "542.06",
-        "9:2",
-        "Subida",
-        "Alphaville SC"
-    ],
-    [
-        "21/01/2023",
-        "2.1",
-        "14",
-        "8",
-        "0",
-        "9:50",
-        "403.81",
-        "6:44",
-        "Check",
-        "Av. Arena Sol"
-    ],
-    [
-        "23/01/2023",
-        "5.1",
-        "41",
-        "52",
-        "21",
-        "8:18",
-        "492.55",
-        "8:13",
-        "Intervalado",
-        "Av. Arena Sol"
-    ],
-    [
-        "25/01/2023",
-        "5.2",
-        "48",
-        "48",
-        "71",
-        "6:57",
-        "563.08",
-        "9:23",
-        "Subida",
-        "Alphaville SC"
-    ],
-    [
-        "27/01/2023",
-        "2.1",
-        "13",
-        "30",
-        "0",
-        "7:30",
-        "385.71",
-        "6:26",
-        "Check",
-        "Av. Arena Sol"
-    ],
-    [
-        "29/01/2023",
-        "6.5",
-        "55",
-        "15",
-        "65",
-        "9:52",
-        "510.00",
-        "8:30",
-        "Livre",
-        "Perto de casa"
-    ],
-    [
-        "31/01/2023",
-        "5",
-        "43",
-        "27",
-        "34",
-        "9:17",
-        "521.40",
-        "8:41",
-        "Livre",
-        "Perto de casa"
-    ],
-    [
-        "02/02/2023",
-        "2.1",
-        "13",
-        "10",
-        "0",
-        "8:50",
-        "376.19",
-        "6:16",
-        "Check",
-        "Av. Arena Sol"
-    ],
-    [
-        "04/02/2023",
-        "3.5",
-        "27",
-        "23",
-        "76",
-        "19:16",
-        "469.43",
-        "7:49",
-        "Livre",
-        "Parque Joaçaba"
-    ],
-    [
-        "06/02/2023",
-        "3.1",
-        "25",
-        "59",
-        "66",
-        "20:42",
-        "502.90",
-        "8:23",
-        "Intervalado",
-        "Parque Joaçaba"
-    ]
-]
+// var values = [
+//     [
+//         "01/12/2022",
+//         "1.89",
+//         "17",
+//         "58",
+//         "31",
+//         "18:45",
+//         "570.37",
+//         "9:30",
+//         "Livre",
+//         "Perto de casa"
+//     ],
+//     [
+//         "07/12/2022",
+//         "2.79",
+//         "26",
+//         "34",
+//         "14",
+//         "17:26",
+//         "571.33",
+//         "9:31",
+//         "Livre",
+//         "Alphaville SC"
+//     ],
+//     [
+//         "12/12/2022",
+//         "2.7",
+//         "30",
+//         "0",
+//         "35",
+//         "17:34",
+//         "666.67",
+//         "11:7",
+//         "Livre",
+//         "Perto de casa"
+//     ],
+//     [
+//         "14/12/2022",
+//         "3.32",
+//         "31",
+//         "13",
+//         "48",
+//         "17:10",
+//         "564.16",
+//         "9:24",
+//         "Livre",
+//         "Perto de casa"
+//     ],
+//     [
+//         "19/12/2022",
+//         "2.1",
+//         "16",
+//         "44",
+//         "0",
+//         "7:57",
+//         "478.10",
+//         "7:58",
+//         "Livre",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "21/12/2022",
+//         "2.13",
+//         "16",
+//         "6",
+//         "3",
+//         "7:10",
+//         "453.52",
+//         "7:34",
+//         "Livre",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "23/12/2022",
+//         "2.1",
+//         "15",
+//         "18",
+//         "3",
+//         "7:01",
+//         "437.14",
+//         "7:17",
+//         "Livre",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "24/12/2022",
+//         "2.11",
+//         "15",
+//         "20",
+//         "0",
+//         "19:12",
+//         "436.02",
+//         "7:16",
+//         "Livre",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "26/12/2022",
+//         "2.1",
+//         "14",
+//         "45",
+//         "3",
+//         "6:58",
+//         "421.43",
+//         "7:1",
+//         "Livre",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "28/12/2022",
+//         "2.1",
+//         "14",
+//         "26",
+//         "3",
+//         "7:08",
+//         "412.38",
+//         "6:52",
+//         "Livre",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "31/12/2022",
+//         "2.1",
+//         "14",
+//         "17",
+//         "3",
+//         "9:11",
+//         "408.10",
+//         "6:48",
+//         "Livre",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "02/01/2023",
+//         "2.1",
+//         "14",
+//         "11",
+//         "0",
+//         "7:21",
+//         "405.24",
+//         "6:45",
+//         "Livre",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "04/01/2023",
+//         "5.5",
+//         "42",
+//         "24",
+//         "39",
+//         "6:58",
+//         "462.55",
+//         "7:43",
+//         "Intervalado",
+//         "Perto de casa"
+//     ],
+//     [
+//         "06/01/2023",
+//         "5.5",
+//         "52",
+//         "2",
+//         "71",
+//         "15:48",
+//         "567.64",
+//         "9:28",
+//         "Subida",
+//         "Alphaville SC"
+//     ],
+//     [
+//         "08/01/2023",
+//         "2.1",
+//         "15",
+//         "52",
+//         "31",
+//         "20:14",
+//         "453.33",
+//         "7:33",
+//         "Livre",
+//         "Parque MVJ"
+//     ],
+//     [
+//         "10/01/2023",
+//         "2.1",
+//         "14",
+//         "12",
+//         "0",
+//         "17:51",
+//         "405.71",
+//         "6:46",
+//         "Check",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "12/01/2023",
+//         "6.6",
+//         "53",
+//         "0",
+//         "11",
+//         "7:11",
+//         "481.82",
+//         "8:2",
+//         "Intervalado",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "16/01/2023",
+//         "3.21",
+//         "29",
+//         "0",
+//         "45",
+//         "7:04",
+//         "542.06",
+//         "9:2",
+//         "Subida",
+//         "Alphaville SC"
+//     ],
+//     [
+//         "21/01/2023",
+//         "2.1",
+//         "14",
+//         "8",
+//         "0",
+//         "9:50",
+//         "403.81",
+//         "6:44",
+//         "Check",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "23/01/2023",
+//         "5.1",
+//         "41",
+//         "52",
+//         "21",
+//         "8:18",
+//         "492.55",
+//         "8:13",
+//         "Intervalado",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "25/01/2023",
+//         "5.2",
+//         "48",
+//         "48",
+//         "71",
+//         "6:57",
+//         "563.08",
+//         "9:23",
+//         "Subida",
+//         "Alphaville SC"
+//     ],
+//     [
+//         "27/01/2023",
+//         "2.1",
+//         "13",
+//         "30",
+//         "0",
+//         "7:30",
+//         "385.71",
+//         "6:26",
+//         "Check",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "29/01/2023",
+//         "6.5",
+//         "55",
+//         "15",
+//         "65",
+//         "9:52",
+//         "510.00",
+//         "8:30",
+//         "Livre",
+//         "Perto de casa"
+//     ],
+//     [
+//         "31/01/2023",
+//         "5",
+//         "43",
+//         "27",
+//         "34",
+//         "9:17",
+//         "521.40",
+//         "8:41",
+//         "Livre",
+//         "Perto de casa"
+//     ],
+//     [
+//         "02/02/2023",
+//         "2.1",
+//         "13",
+//         "10",
+//         "0",
+//         "8:50",
+//         "376.19",
+//         "6:16",
+//         "Check",
+//         "Av. Arena Sol"
+//     ],
+//     [
+//         "04/02/2023",
+//         "3.5",
+//         "27",
+//         "23",
+//         "76",
+//         "19:16",
+//         "469.43",
+//         "7:49",
+//         "Livre",
+//         "Parque Joaçaba"
+//     ],
+//     [
+//         "06/02/2023",
+//         "3.1",
+//         "25",
+//         "59",
+//         "66",
+//         "20:42",
+//         "502.90",
+//         "8:23",
+//         "Intervalado",
+//         "Parque Joaçaba"
+//     ]
+// ]
+
+/* exported gapiLoaded */
+/* exported gisLoaded */
+/* exported handleAuthClick */
+/* exported handleSignoutClick */
+
+// TODO(developer): Set to client ID and API key from the Developer Console
+const CLIENT_ID = '192707284225-tsjg3e79vl6papuv6okjla6ntapc7hsa.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyB2Mf_OmGx2FoJH4wRAJkLr05BJ9r7IhvY';
+
+// Discovery doc URL for APIs used by the quickstart
+const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
+const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+
+let tokenClient;
+let gapiInited = false;
+let gisInited = false;
+
+document.getElementById('authorize_button').style.visibility = 'hidden';
+document.getElementById('signout_button').style.visibility = 'hidden';
+
+/**
+ * Callback after api.js is loaded.
+ */
+function gapiLoaded() {
+    gapi.load('client', initializeGapiClient);
+}
+
+/**
+ * Callback after the API client is loaded. Loads the
+ * discovery doc to initialize the API.
+ */
+async function initializeGapiClient() {
+    await gapi.client.init({
+        apiKey: API_KEY,
+        discoveryDocs: [DISCOVERY_DOC],
+    });
+    gapiInited = true;
+    maybeEnableButtons();
+}
+
+/**
+ * Callback after Google Identity Services are loaded.
+ */
+function gisLoaded() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: '', // defined later
+    });
+    gisInited = true;
+    maybeEnableButtons();
+}
+
+/**
+ * Enables user interaction after all libraries are loaded.
+ */
+function maybeEnableButtons() {
+    if (gapiInited && gisInited) {
+        document.getElementById('authorize_button').style.visibility = 'visible';
+    }
+}
+
+/**
+ *  Sign in the user upon button click.
+ */
+function handleAuthClick() {
+    tokenClient.callback = async (resp) => {
+        if (resp.error !== undefined) {
+            throw (resp);
+        }
+        document.getElementById('signout_button').style.visibility = 'visible';
+        document.getElementById('authorize_button').innerText = 'Refresh';
+        await listMajors();
+    };
+
+    if (gapi.client.getToken() === null) {
+        // Prompt the user to select a Google Account and ask for consent to share their data
+        // when establishing a new session.
+        tokenClient.requestAccessToken({
+            prompt: 'consent'
+        });
+    } else {
+        // Skip display of account chooser and consent dialog for an existing session.
+        tokenClient.requestAccessToken({
+            prompt: ''
+        });
+    }
+}
+
+/**
+ *  Sign out the user upon button click.
+ */
+function handleSignoutClick() {
+    const token = gapi.client.getToken();
+    if (token !== null) {
+        google.accounts.oauth2.revoke(token.access_token);
+        gapi.client.setToken('');
+        document.getElementById('content').innerText = '';
+        document.getElementById('authorize_button').innerText = 'Authorize';
+        document.getElementById('signout_button').style.visibility = 'hidden';
+    }
+}
+
+/**
+ * Print the names and majors of students in a sample spreadsheet:
+ * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+ * 
+ * 1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY
+ */
+async function listMajors() {
+    let response;
+    try {
+        // Fetch first 10 files
+        response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY',
+            range: 'Carol!A2:J',
+        });
+    } catch (err) {
+        document.getElementById('content').innerText = err.message;
+        return;
+    }
+    const range = response.result;
+    if (!range || !range.values || range.values.length == 0) {
+        document.getElementById('content').innerText = 'No values found.';
+        return;
+    }
 
 
-// Ploting charts
-create_chart(values)
-//create_chart_pace(values)
-treinos_por_local(values)
-treinos_por_tipo_bubble(values)
+    values = range.values.slice()
 
-create_summary(values)
-create_list(values)
+    // Ploting charts
+    create_chart(values)
+    //create_chart_pace(values)
+    treinos_por_local(values)
+    treinos_por_tipo_bubble(values)
+
+    create_summary(values)
+    create_list(values)
+
+}
+
+
+
 
 
 $(document).ready(function () {
-    $('input[type=radio][name=btnradio]').change(function() {
-        if ($(this).attr('id') == 'pace_radio'){
+    $('input[type=radio][name=btnradio]').change(function () {
+        if ($(this).attr('id') == 'pace_radio') {
             $('#check_plot').html("");
             create_chart_pace(values)
-        }else{
+        } else {
             create_chart(values)
         }
     });
 })
 
-function create_summary(dados){
+function create_summary(dados) {
 
     var info = get_general_info(dados)
-    
+
     var html = `<h1>${info.total_atividades}</h1>
                         <span>Atividades</span>
                         <hr />
@@ -359,12 +496,12 @@ function create_summary(dados){
                         <h5><b>${info.horas}:${info.minutos}:${info.seg}</b></h5>
                         
                         `
-                        // <hr />
-                        // Última Atividade <br/>
-                        // <p>${info.ultimo_treino.local}</p>
-                        // <p><b>${info.ultimo_treino.pace}</b>/km</p>
-                        // <p>${convert_date(info.ultimo_treino.data)}</p>
-                        
+    // <hr />
+    // Última Atividade <br/>
+    // <p>${info.ultimo_treino.local}</p>
+    // <p><b>${info.ultimo_treino.pace}</b>/km</p>
+    // <p>${convert_date(info.ultimo_treino.data)}</p>
+
     $("#info").append(html);
     $('#resumo_data').html(convert_date(info.ultimo_treino.data))
     $('.resumo_local').html(info.ultimo_treino.local)
@@ -372,19 +509,19 @@ function create_summary(dados){
 
 }
 
-function create_list(dados){
+function create_list(dados) {
 
     var reverse_values = dados.slice().reverse();
-    
+
     reverse_values.forEach(element => {
-    
+
         var tipo = ``
-    
+
         if (element[8] == "Check")
             tipo = `<i class="bi bi-check-circle-fill" id="orange"></i> ${element[8]}`
         else
             tipo = `<i class="bi bi-circle-fill" id="viollet"></i> ${element[8]}`
-    
+
         var html = `<tr class="pt-3">
                       <td class="pt-3">${convert_date(element[0])}</td>
                       <td class="pt-3">${element[1]} km</td>
@@ -394,7 +531,7 @@ function create_list(dados){
                       <td class="pt-3">${element[9]}</td>
                     </tr>`
         $("tbody").append(html);
-    
+
     })
 }
 
@@ -513,29 +650,13 @@ function create_chart_pace(dados) {
     console.log(avg)
     var pace_f = `${parseInt(avg / 60)}:${parseInt(avg % 60)}`
 
-    for (i = 0; i < pace.length; i++){
+    for (i = 0; i < pace.length; i++) {
         avg_values.push(avg)
     }
 
 
     var desempenho = '';
     var desempenho_cor = '';
-    // var diff = parseInt((minutes[minutes.length - 2] -  minutes[minutes.length - 1]) * 60)
-
-    // if (diff > 0){
-    //     desempenho = `<b>progresso</b><br>${diff}seg`;
-    //     desempenho_cor = '#6dae8d'
-    // } else {
-
-    //     if(diff < 0){
-    //         desempenho = `<b>regresso</b><br>${Math.abs(diff)}seg`;
-    //         desempenho_cor = '#ff0000'
-    //     } else {
-    //         desempenho = `<b>sem variação</b>`;
-    //         desempenho_cor = '#6639e9'
-    //     }
-
-    // }
 
 
     var treinos = {
@@ -585,7 +706,7 @@ function create_chart_pace(dados) {
         xaxis: {
             automargin: true,
             showgrid: false,
-            tickcolor: '#000'  
+            tickcolor: '#000'
         },
 
         showlegend: true,
@@ -602,24 +723,6 @@ function create_chart_pace(dados) {
             pad: 10
         },
         title: false,
-        annotations: [
-            {
-              x: treinos.x[treinos.x.length -1], 
-              y: treinos.y[treinos.x.length -1] + 0.5,
-              xref: 'x',
-              yref: 'y',
-              text: desempenho,
-              showarrow: false,
-              arrowhead: 1,
-              ax: 0,
-              ay: -40,
-              font: {
-                family: 'Nunito, sans-serif',
-                size: 14,
-                color: desempenho_cor
-              }
-            }
-          ]
 
     };
 
@@ -647,14 +750,14 @@ function create_chart(dados) {
 
     var desempenho = '';
     var desempenho_cor = '';
-    var diff = parseInt((minutes[minutes.length - 2] -  minutes[minutes.length - 1]) * 60)
+    var diff = parseInt((minutes[minutes.length - 2] - minutes[minutes.length - 1]) * 60)
 
-    if (diff > 0){
+    if (diff > 0) {
         desempenho = `<b>progresso</b><br>${diff}seg`;
         desempenho_cor = '#6dae8d'
     } else {
 
-        if(diff < 0){
+        if (diff < 0) {
             desempenho = `<b>regresso</b><br>${Math.abs(diff)}seg`;
             desempenho_cor = '#ff0000'
         } else {
@@ -709,7 +812,7 @@ function create_chart(dados) {
         xaxis: {
             automargin: true,
             showgrid: false,
-            tickcolor: '#000'  
+            tickcolor: '#000'
         },
 
         showlegend: true,
@@ -726,24 +829,22 @@ function create_chart(dados) {
             pad: 10
         },
         title: false,
-        annotations: [
-            {
-              x: treinos.x[treinos.x.length -1], 
-              y: treinos.y[treinos.x.length -1] + 0.5,
-              xref: 'x',
-              yref: 'y',
-              text: desempenho,
-              showarrow: false,
-              arrowhead: 1,
-              ax: 0,
-              ay: -40,
-              font: {
+        annotations: [{
+            x: treinos.x[treinos.x.length - 1],
+            y: treinos.y[treinos.x.length - 1] + 0.5,
+            xref: 'x',
+            yref: 'y',
+            text: desempenho,
+            showarrow: false,
+            arrowhead: 1,
+            ax: 0,
+            ay: -40,
+            font: {
                 family: 'Nunito, sans-serif',
                 size: 14,
                 color: desempenho_cor
-              }
             }
-          ]
+        }]
 
     };
 
