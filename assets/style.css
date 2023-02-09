@@ -30,6 +30,13 @@ body {
     text-align: left;
 
 }
+#viollet {
+    color: #6639e9;
+}
+
+#orange {
+    color: #6dae8d;
+}
 
 .table {
     padding: 0rem 0rem;
