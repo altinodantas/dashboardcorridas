@@ -39,10 +39,17 @@
             <a class="nav-link" href="#creditos">Créditos</a>
           </li>
 
+          <li class="nav-item">
+
+            <button class="btn btn-sm btn-warning" id="authorize_button" onclick="handleAuthClick()">Authorize</button>
+          </li>
+          <li class="nav-item">
+            &nbsp;<button class="btn btn-sm btn-warning" id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+
+          </li>
+
         </ul>
 
-        <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
-    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
 
       </div>
     </div>
@@ -51,7 +58,7 @@
   <div style="height: 100px;"></div>
 
   
-  <div class="container px-4">
+  <div class="container">
     
     <div class="row g-2" id="meta">
       <div class="col-lg-9 col-md-8">
