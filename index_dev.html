@@ -16,39 +16,42 @@
 </head>
 
 <body>
-
-  <nav id="topo" class="navbar navbar-expand-lg" style="background-image: linear-gradient(to right, #6c36f1 , #6d37f0);">
+  <a class="anchor" id="topo_anchor"></a>
+  <nav id="topo" class="navbar navbar-expand-lg fixed-top" style="background-image: linear-gradient(to right, #6c36f1 , #6d37f0);">
     <div class="container">
-      <a class="navbar-brand" href="#topo"><h1><b>Dashboard</b> | Corridas </h1></a>
+      <a class="navbar-brand me-auto" href="#topo_anchor"><h1><b>Dashboard</b> | Corridas </h1></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
+      
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#meta">Meta</a>
+            <a class="nav-link" href="#check_anchor">Meta</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#lista">Últimas atividades</a>
+            <a class="nav-link" href="#activities_anchor">Últimas atividades</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#creditos">Créditos</a>
           </li>
 
         </ul>
+
       </div>
     </div>
   </nav>
 
-  <div class="p-3"></div>
-
+  <div style="height: 100px;"></div>
 
   <div class="container px-4">
     <div class="row g-2" id="meta">
       <div class="col-md-9">
         <div class="p-3">
           <div class="block">
+            <a class="anchor" id="check_anchor"></a>
             <h3>Treino Check</h3>
             <div id='check_plot'></div>
           </div>
@@ -87,6 +90,7 @@
         <div class="p-3">
           <div class="block">
             <div id='lista'>
+              <a class="anchor" id="activities_anchor"></a>
               <h4>Últimas atividades</h4>
               <div class="p-2"></div>
               <div class="table-responsive">
@@ -119,7 +123,7 @@
   </div>
 
   <div class="p-3"></div>
-  <p class="text-center" id="creditos">AC Fitness Viewer. Todos os direitos reservados.</p>
+  <p class="text-center" id="creditos">AC Running Viewer &#169;. Todos os direitos reservados.</p>
   <div class="p-3"></div>
 
 
@@ -483,7 +487,12 @@
                     <p>${info.distancia} <b>km</b></p>
                     <p>${info.elevacao} <b>metros</b></p>
                     <h5><b>${info.horas}:${info.minutos}:${info.seg}</b></h5>
-                    <span>em movimento</span>`
+                    
+                    <hr />
+                    Última Atividade <br/>
+                    <p>${info.ultimo_treino.local}</p>
+                    <p><b>${info.ultimo_treino.pace}</b>/km</p>
+                    <p>${convert_date(info.ultimo_treino.data)}</p>`
 
 
     var reverse_values = values.reverse()
@@ -517,6 +526,7 @@
       var elevacao = 0
       var ultimo_treino_data = dados[total_atividades - 1][0]
       var ultimo_treino_local = dados[total_atividades - 1][9]
+      var ultimo_treino_pace = dados[total_atividades - 1][7]
       var segundos = 0
       var horas = 0
       var minutos = 0
@@ -536,7 +546,7 @@
         "total_atividades": total_atividades,
         "distancia": distancia,
         "elevacao": elevacao,
-        "ultimo_treino": { "data": ultimo_treino_data, "local": ultimo_treino_local },
+        "ultimo_treino": { "data": ultimo_treino_data, "local": ultimo_treino_local, "pace": ultimo_treino_pace},
         "segundos": segundos,
         "horas": horas,
         "minutos": minutos,
