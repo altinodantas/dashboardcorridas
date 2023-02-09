@@ -1,0 +1,69 @@
+body {
+    background-color: #fafafa;
+    font-family: 'Nunito', sans-serif;
+}
+
+.block {
+    display: block;
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: rgba(109, 105, 105, 0.15) 4px 4px 25px 0px;
+    /* overflow: hidden; */
+    padding: 15px;
+}
+
+.block h3 {
+
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin: 10px;
+    text-align: left;
+
+}
+
+.block h4 {
+
+    font-weight: bolder;
+    font-size: 1.2rem;
+    margin: 10px;
+    text-align: left;
+
+}
+
+.table {
+    padding: 0rem 0rem;
+}
+
+.btn-rounded {
+    border-radius: 50px;
+    padding: 5px 15px;
+  }
+
+#info h1 {
+
+    font-size: 6rem;
+    font-weight: 700;
+
+}
+
+#info {
+    padding: 20px 0;
+}
+
+.navbar-expand-lg {
+    padding: 12px;
+}
+
+.navbar-expand-lg a{
+    color: #fff;
+}
+.navbar-expand-lg a:hover, .navbar-expand-lg a:active{
+    color: #fb851e;
+}
+
+.active { color: #fb851e;}
+
+.navbar-brand, .navbar-toggler, .navbar-toggler-icon{
+    color: #fff;
+}

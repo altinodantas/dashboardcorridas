@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Histórico de corridas</title>
+  <meta charset="utf-8" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;800&display=swap" rel="stylesheet">
+
+  <link href="assets/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <nav id="topo" class="navbar navbar-expand-lg" style="background-image: linear-gradient(to right, #6c36f1 , #6d37f0);">
+    <div class="container">
+      <a class="navbar-brand" href="#topo"><h1><b>Dashboard</b> | Corridas </h1></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#meta">Meta</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#lista">Últimas atividades</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#creditos">Créditos</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="p-3"></div>
+
+
+  <div class="container px-4">
+    <div class="row g-2" id="meta">
+      <div class="col-md-9">
+        <div class="p-3">
+          <div class="block">
+            <h3>Treino Check</h3>
+            <div id='check_plot'></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-3">
+          <div class="block text-center">
+            <div id='info'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-lg-6">
+        <div class="p-3">
+          <div class="block">
+            <h4>Treinos por Local</h4>
+            <div id='locais_plot'></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-3">
+          <div class="block">
+            <h4>Tipos de treino</h4>
+            <div id='locais_plot_bubble'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-2">
+      <div class="col">
+        <div class="p-3">
+          <div class="block">
+            <div id='lista'>
+              <h4>Últimas atividades</h4>
+              <div class="p-2"></div>
+              <div class="table-responsive">
+
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th scope="col">Data</th>
+                      <th scope="col">Distância</th>
+                      <th scope="col">Tempo</th>
+                      <th scope="col">Rítimo</th>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Local</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+  
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="p-3"></div>
+  <p class="text-center" id="creditos">AC Fitness Viewer. Todos os direitos reservados.</p>
+  <div class="p-3"></div>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+
+  <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
+  <script type="text/javascript">
+
+    var values = [
+      [
+        "01/12/2022",
+        "1.89",
+        "17",
+        "58",
+        "31",
+        "18:45",
+        "570.37",
+        "9:30",
+        "Livre",
+        "Perto de casa"
+      ],
+      [
+        "07/12/2022",
+        "2.79",
+        "26",
+        "34",
+        "14",
+        "17:26",
+        "571.33",
+        "9:31",
+        "Livre",
+        "Alphaville SC"
+      ],
+      [
+        "12/12/2022",
+        "2.7",
+        "30",
+        "0",
+        "35",
+        "17:34",
+        "666.67",
+        "11:7",
+        "Livre",
+        "Perto de casa"
+      ],
+      [
+        "14/12/2022",
+        "3.32",
+        "31",
+        "13",
+        "48",
+        "17:10",
+        "564.16",
+        "9:24",
+        "Livre",
+        "Perto de casa"
+      ],
+      [
+        "19/12/2022",
+        "2.1",
+        "16",
+        "44",
+        "0",
+        "7:57",
+        "478.10",
+        "7:58",
+        "Livre",
+        "Av. Arena Sol"
+      ],
+      [
+        "21/12/2022",
+        "2.13",
+        "16",
+        "6",
+        "3",
+        "7:10",
+        "453.52",
+        "7:34",
+        "Livre",
+        "Av. Arena Sol"
+      ],
+      [
+        "23/12/2022",
+        "2.1",
+        "15",
+        "18",
+        "3",
+        "7:01",
+        "437.14",
+        "7:17",
+        "Livre",
+        "Av. Arena Sol"
+      ],
+      [
+        "24/12/2022",
+        "2.11",
+        "15",
+        "20",
+        "0",
+        "19:12",
+        "436.02",
+        "7:16",
+        "Livre",
+        "Av. Arena Sol"
+      ],
+      [
+        "26/12/2022",
+        "2.1",
+        "14",
+        "45",
+        "3",
+        "6:58",
+        "421.43",
+        "7:1",
+        "Livre",
+        "Av. Arena Sol"
+      ],
+      [
+        "28/12/2022",
+        "2.1",
+        "14",
+        "26",
+        "3",
+        "7:08",
+        "412.38",
+        "6:52",
+        "Livre",
+        "Av. Arena Sol"
+      ],
+      [
+        "31/12/2022",
+        "2.1",
+        "14",
+        "17",
+        "3",
+        "9:11",
+        "408.10",
+        "6:48",
+        "Livre",
+        "Av. Arena Sol"
+      ],
+      [
+        "02/01/2023",
+        "2.1",
+        "14",
+        "11",
+        "0",
+        "7:21",
+        "405.24",
+        "6:45",
+        "Livre",
+        "Av. Arena Sol"
+      ],
+      [
+        "04/01/2023",
+        "5.5",
+        "42",
+        "24",
+        "39",
+        "6:58",
+        "462.55",
+        "7:43",
+        "Intervalado",
+        "Perto de casa"
+      ],
+      [
+        "06/01/2023",
+        "5.5",
+        "52",
+        "2",
+        "71",
+        "15:48",
+        "567.64",
+        "9:28",
+        "Subida",
+        "Alphaville SC"
+      ],
+      [
+        "08/01/2023",
+        "2.1",
+        "15",
+        "52",
+        "31",
+        "20:14",
+        "453.33",
+        "7:33",
+        "Livre",
+        "Parque MVJ"
+      ],
+      [
+        "10/01/2023",
+        "2.1",
+        "14",
+        "12",
+        "0",
+        "17:51",
+        "405.71",
+        "6:46",
+        "Check",
+        "Av. Arena Sol"
+      ],
+      [
+        "12/01/2023",
+        "6.6",
+        "53",
+        "0",
+        "11",
+        "7:11",
+        "481.82",
+        "8:2",
+        "Intervalado",
+        "Av. Arena Sol"
+      ],
+      [
+        "16/01/2023",
+        "3.21",
+        "29",
+        "0",
+        "45",
+        "7:04",
+        "542.06",
+        "9:2",
+        "Subida",
+        "Alphaville SC"
+      ],
+      [
+        "21/01/2023",
+        "2.1",
+        "14",
+        "8",
+        "0",
+        "9:50",
+        "403.81",
+        "6:44",
+        "Check",
+        "Av. Arena Sol"
+      ],
+      [
+        "23/01/2023",
+        "5.1",
+        "41",
+        "52",
+        "21",
+        "8:18",
+        "492.55",
+        "8:13",
+        "Intervalado",
+        "Av. Arena Sol"
+      ],
+      [
+        "25/01/2023",
+        "5.2",
+        "48",
+        "48",
+        "71",
+        "6:57",
+        "563.08",
+        "9:23",
+        "Subida",
+        "Alphaville SC"
+      ],
+      [
+        "27/01/2023",
+        "2.1",
+        "13",
+        "30",
+        "0",
+        "7:30",
+        "385.71",
+        "6:26",
+        "Check",
+        "Av. Arena Sol"
+      ],
+      [
+        "29/01/2023",
+        "6.5",
+        "55",
+        "15",
+        "65",
+        "9:52",
+        "510.00",
+        "8:30",
+        "Livre",
+        "Perto de casa"
+      ],
+      [
+        "31/01/2023",
+        "5",
+        "43",
+        "27",
+        "34",
+        "9:17",
+        "521.40",
+        "8:41",
+        "Livre",
+        "Perto de casa"
+      ],
+      [
+        "02/02/2023",
+        "2.1",
+        "13",
+        "10",
+        "0",
+        "8:50",
+        "376.19",
+        "6:16",
+        "Check",
+        "Av. Arena Sol"
+      ],
+      [
+        "04/02/2023",
+        "3.5",
+        "27",
+        "23",
+        "76",
+        "19:16",
+        "469.43",
+        "7:49",
+        "Livre",
+        "Parque Joaçaba"
+      ],
+      [
+        "06/02/2023",
+        "3.1",
+        "25",
+        "59",
+        "66",
+        "20:42",
+        "502.90",
+        "8:23",
+        "Intervalado",
+        "Parque Joaçaba"
+      ]
+    ]
+
+
+    let check_train = []
+
+    check_train = values.filter(element => element[8] == 'Check')
+
+
+
+    // Ploting charts
+    creat_chart(check_train)
+    treinos_por_local(values)
+    treinos_por_tipo_bubble(values)
+
+    // Getting info
+
+    console.log(get_general_info(values))
+
+    var info = get_general_info(values)
+    var html = `<h1>${info.total_atividades}</h1>
+                    <span>Atividades</span>
+                    <hr />
+                    <p>${info.distancia} <b>km</b></p>
+                    <p>${info.elevacao} <b>metros</b></p>
+                    <h5><b>${info.horas}:${info.minutos}:${info.seg}</b></h5>
+                    <span>em movimento</span>`
+
+
+    var reverse_values = values.reverse()
+
+    $("#info").append(html);
+    reverse_values.forEach(element => {
+
+      var tipo = ``
+
+      if (element[8] == "Check")
+        tipo = `<button type="button" class="btn btn-success btn-sm btn-rounded">${element[8]}</button>`
+      else
+        tipo = element[8]
+
+      var html = `<tr class="pt-3">
+                  <td class="pt-3">${element[0]}</td>
+                  <td class="pt-3">${element[1]} km</td>
+                  <td class="pt-3">${element[2]}min ${element[3]}seg</td>
+                  <td class="pt-3">${element[7]}/km</td>
+                  <td class="pt-3">${tipo}</td>
+                  <td class="pt-3">${element[9]}</td>
+                </tr>`
+      $("tbody").append(html);
+
+    })
+
+    function get_general_info(dados) {
+
+      var total_atividades = dados.length
+      var distancia = 0
+      var elevacao = 0
+      var ultimo_treino_data = dados[total_atividades - 1][0]
+      var ultimo_treino_local = dados[total_atividades - 1][9]
+      var segundos = 0
+      var horas = 0
+      var minutos = 0
+      var seg = 0
+
+      dados.forEach(element => {
+        distancia += parseFloat(element[1])
+        elevacao += parseInt(element[4])
+        segundos += (parseInt(element[2]) * 60) + parseInt(element[3])
+      })
+
+      horas = parseInt(segundos / 3600)
+      minutos = parseInt((segundos % 3600) / 60)
+      seg = segundos % 60
+
+      return {
+        "total_atividades": total_atividades,
+        "distancia": distancia,
+        "elevacao": elevacao,
+        "ultimo_treino": { "data": ultimo_treino_data, "local": ultimo_treino_local },
+        "segundos": segundos,
+        "horas": horas,
+        "minutos": minutos,
+        "seg": seg
+      }
+    }
+
+
+    function creat_chart(result) {
+      let x_ = []
+      let y_ = []
+      let minutes = []
+      let sec = []
+
+      result.forEach(element => {
+        y_.push(parseFloat(element[6]))
+        x_.push(element[0])
+        minutes.push(parseInt(element[2]) + parseInt(element[3]) / 60)
+        sec.push(element[2] + "min" + element[3] + "seg")
+      })
+
+      var trenos = {
+        x: x_,
+        y: minutes,
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: { size: 10 },
+        line: { width: 4, shape: 'spline', color: 'rgb(108, 54, 241)' },
+        name: 'treinos',
+        hovertemplate: 'tempo: %{text}<extra></extra>',
+        text: sec
+      };
+
+      var meta = {
+        x: x_,
+        y: [12, 12, 12, 12],
+        type: 'scatter',
+        mode: 'lines',
+        line: { width: 4, shape: 'spline' },
+        name: 'meta',
+        hovertemplate: 'tempo: %{y:.0f}min<extra></extra>',
+      };
+
+      var data = [trenos, meta];
+
+      var layout = {
+       
+        yaxis: {
+          autorange: false,
+          range: [11, 16],
+          type: 'linear',
+          automargin: true
+        },
+        xaxis: {
+          automargin: true
+        },
+
+        showlegend: true,
+        legend: {orientation : 'h', x: 0.35, y: 1.1},
+        margin: {
+          l: 70,
+          r: 50,
+          b: 50,
+          t: 50,
+          pad: 10
+        }, title: false
+
+      };
+
+      Plotly.newPlot('check_plot', data, layout, { displayModeBar: false });
+
+    }
+
+    function treinos_por_local(dados) {
+
+      var dict = {};
+
+      dados.forEach(element => {
+        var local = element[9]
+        if (local in dict)
+          dict[local] += 1
+        else
+          dict[local] = 1
+      })
+
+      var quantidade_ativiades = Object.values(dict);
+      var locais = Object.keys(dict);
+
+      var qtd_norm = quantidade_ativiades.map(element => element / dados.length)
+
+      var data = [{
+        values: quantidade_ativiades,
+        labels: locais,
+        type: "pie",
+        hole: .4,
+      }];
+
+      var layout = {
+        yaxis: {
+          automargin: true
+        },
+        colorway: ['#6c36f1'], 
+        legend: {orientation : 'h', x: 0.1},
+        margin: {
+          l: 10,
+          r: 10,
+          b: 30,
+          t: 30,
+          pad: 10
+        }, 
+        title: false
+      };
+
+      Plotly.newPlot("locais_plot", data, layout, { displayModeBar: false });
+    }
+
+    function treinos_por_tipo_bubble(dados) {
+
+      var dict = {};
+      var distancia = {}
+
+      dados.forEach(element => {
+        var tipo = element[8]
+        if (tipo in dict) {
+          dict[tipo] += 1
+          distancia[tipo] += parseFloat(element[1])
+        }
+        else {
+          dict[tipo] = 1
+          distancia[tipo] = 0
+        }
+      })
+
+
+      var quantidade = Object.values(dict);
+      var tipos = Object.keys(dict);
+      var bubbles = Object.values(distancia);
+
+      var avg_distance = bubbles.map((element, i) => {
+        return element / quantidade[i] * 20 // distância média vezes 20 para aumentar o tamanho das bolhas
+      })
+
+      var data = [{
+        x: tipos,
+        y: quantidade,
+        mode: 'markers',
+        marker: {
+          opacity: [0.4, 0.5, 0.6, 0.8, 1],
+          size: avg_distance
+        }
+      }];
+
+      var layout = {
+        
+        yaxis: {
+          automargin: true
+        },
+        colorway: ['#6c36f1'],
+        margin: {
+          l: 40,
+          r: 30,
+          b: 50,
+          t: 40,
+          pad: 10
+        }
+      };
+
+      Plotly.newPlot("locais_plot_bubble", data, layout, { displayModeBar: false });
+    }
+
+  </script>
+
+</body>
+
+</html>
