@@ -55,6 +55,9 @@ body {
     font-weight: 700;
 
 }
+nav#topo h1 {
+    letter-spacing: -2px;
+}
 
 #info {
     padding: 20px 0;
@@ -96,7 +99,15 @@ a.anchor {
 }
 .resumo_data { text-align: right;}
 .resumo_ultimo { text-align: left;}
-.resumo_local_icon {font-size: 2rem; margin-bottom: 0px; margin-top: 5px;}
+.resumo_local_icon {font-size: 1.8rem; margin-bottom: 0px; margin-top: 5px;}
 .resumo_local { font-size: 1.2rem; font-weight: 300; margin: 0;}
 .resumo_pace {font-size: 2.4rem; font-weight: bolder; margin: -8px;}
 .resumo_pace span{font-size: 1.2rem; font-weight: 200;}
+
+#resumo_qtd_atividades {font-size: 6rem; font-weight: 600;}
+#resumo_km {font-size: 1rem; font-weight: 300;}
+#resumo_km span {font-weight: 700;}
+#resumo_tempo_total {font-size: 2rem; font-weight: 600;}
+.resumo_atividade {margin-top: -30px; margin-bottom: 25px;}
+.resumo_movimento {margin-top: -10px; margin-bottom: 15px;}
+.clock {font-size: 1.4rem;}
