@@ -459,7 +459,7 @@ async function listMajors() {
     values = range.values.slice()
 
     // Ploting charts
-    create_chart(values)
+    create_chart(values, 12)
     //create_chart_pace(values)
     treinos_por_local(values)
     treinos_por_tipo_bubble(values)
@@ -469,17 +469,13 @@ async function listMajors() {
 
 }
 
-
-
-
-
 $(document).ready(function () {
     $('input[type=radio][name=btnradio]').change(function () {
         if ($(this).attr('id') == 'pace_radio') {
             $('#check_plot').html("");
             create_chart_pace(values)
         } else {
-            create_chart(values)
+            create_chart(values, 12)
         }
     });
 })
@@ -502,7 +498,7 @@ function create_summary(dados) {
     // <p><b>${info.ultimo_treino.pace}</b>/km</p>
     // <p>${convert_date(info.ultimo_treino.data)}</p>
 
-    $("#info").append(html);
+    $("#info").html(html);
     $('#resumo_data').html(convert_date(info.ultimo_treino.data))
     $('.resumo_local').html(info.ultimo_treino.local)
     $('.resumo_pace').html(info.ultimo_treino.pace + "<span>/km</span>")
@@ -647,7 +643,6 @@ function create_chart_pace(dados) {
 
     var avg = sum_paces / dias.length
 
-    console.log(avg)
     var pace_f = `${parseInt(avg / 60)}:${parseInt(avg % 60)}`
 
     for (i = 0; i < pace.length; i++) {
@@ -732,7 +727,7 @@ function create_chart_pace(dados) {
 
 }
 
-function create_chart(dados) {
+function create_chart(dados, meta_value) {
 
     var result = dados.filter(element => element[8] == 'Check')
 
@@ -740,6 +735,7 @@ function create_chart(dados) {
     let y_ = []
     let minutes = []
     let sec = []
+    let avg_values_meta = []
 
     result.forEach(element => {
         y_.push(parseFloat(element[6]))
@@ -747,6 +743,10 @@ function create_chart(dados) {
         minutes.push(parseInt(element[2]) + parseInt(element[3]) / 60)
         sec.push(element[2] + "min" + element[3] + "seg")
     })
+
+    for (i = 0; i < result.length; i++){
+        avg_values_meta.push(meta_value)
+    }
 
     var desempenho = '';
     var desempenho_cor = '';
@@ -788,7 +788,7 @@ function create_chart(dados) {
 
     var meta = {
         x: x_,
-        y: [12, 12, 12, 12],
+        y: avg_values_meta,
         type: 'scatter',
         mode: 'lines',
         line: {
