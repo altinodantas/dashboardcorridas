@@ -44,6 +44,8 @@ body {
     padding: 0rem 0rem;
 }
 
+.table th {white-space: nowrap;}
+
 .btn-rounded {
     border-radius: 50px;
     padding: 5px 15px;
@@ -106,8 +108,25 @@ a.anchor {
 
 #resumo_qtd_atividades {font-size: 6rem; font-weight: 600;}
 #resumo_km {font-size: 1rem; font-weight: 300;}
-#resumo_km span {font-weight: 700;}
+#resumo_km span, #resumo_elevacao span  {font-weight: 700;}
 #resumo_tempo_total {font-size: 2rem; font-weight: 600;}
 .resumo_atividade {margin-top: -30px; margin-bottom: 25px;}
 .resumo_movimento {margin-top: -10px; margin-bottom: 15px;}
 .clock {font-size: 1.4rem;}
+
+
+@media (max-width: 767.98px) {
+
+    body {
+        font-size: 0.9rem;
+    }
+
+    .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        --bs-gutter-x: 1.5rem;
+        --bs-gutter-y: 0;
+        width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * .1);
+        padding-left: calc(var(--bs-gutter-x) * .1);
+    }
+
+}

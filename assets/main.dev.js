@@ -334,9 +334,15 @@ create_summary(values)
 create_list(values)
 
 
-
-
 $(document).ready(function () {
+    
+    $("#procurar_atividade").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tabela_lista tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+
     $('input[type=radio][name=btnradio]').change(function () {
         if ($(this).attr('id') == 'pace_radio') {
             $('#check_plot').html("");
@@ -345,21 +351,23 @@ $(document).ready(function () {
             create_chart(values, 12)
         }
     });
+
+    $('.navbar-nav>li>a').on('click', function(){
+        $('.navbar-collapse').collapse('hide');
+    });
 })
+
+
 
 function create_summary(dados) {
 
     var info = get_general_info(dados)
+    var time = `${info.horas}:${info.minutos}:${info.seg}`
 
-    var html = `<h1>${info.total_atividades}</h1>
-                        <span>Atividades</span>
-                        <hr />
-                        <p>${info.distancia} <b>km</b></p>
-                        <p>${info.elevacao} <b>metros</b></p>
-                        <h5><b>${info.horas}:${info.minutos}:${info.seg}</b></h5>
-                        `
-
-    $("#info").html(html);
+    $('#resumo_qtd_atividades').html(info.total_atividades)
+    $('#resumo_km').html(info.distancia + "<span> km</span>")
+    $('#resumo_tempo_total').html(time)
+    $('#resumo_elevacao').html(info.elevacao + "<span> metros</span>")
     $('#resumo_data').html(convert_date(info.ultimo_treino.data))
     $('.resumo_local').html(info.ultimo_treino.local)
     $('.resumo_pace').html(info.ultimo_treino.pace + "<span>/km</span>")

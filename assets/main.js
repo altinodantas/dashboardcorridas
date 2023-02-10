@@ -139,6 +139,14 @@ async function listMajors() {
 }
 
 $(document).ready(function () {
+    
+    $("#procurar_atividade").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tabela_lista tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+
     $('input[type=radio][name=btnradio]').change(function () {
         if ($(this).attr('id') == 'pace_radio') {
             $('#check_plot').html("");
@@ -146,6 +154,10 @@ $(document).ready(function () {
         } else {
             create_chart(values, 12)
         }
+    });
+
+    $('.navbar-nav>li>a').on('click', function(){
+        $('.navbar-collapse').collapse('hide');
     });
 })
 
