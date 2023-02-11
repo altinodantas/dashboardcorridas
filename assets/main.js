@@ -1,5 +1,12 @@
-// TODO(developer): Set to client ID and API key from the Developer Console
-const CLIENT_ID = '192707284225-tsjg3e79vl6papuv6okjla6ntapc7hsa.apps.googleusercontent.com';
+const TYPE = 'prod';
+let CLIENT_ID = '';
+
+if (TYPE == 'test')
+    CLIENT_ID = "192707284225-74pk61g5bnkkh5biec579v5gasel67us.apps.googleusercontent.com"; // local
+else 
+    CLIENT_ID = "192707284225-tsjg3e79vl6papuv6okjla6ntapc7hsa.apps.googleusercontent.com"; // github
+
+
 const API_KEY = 'AIzaSyB2Mf_OmGx2FoJH4wRAJkLr05BJ9r7IhvY';
 
 // Discovery doc URL for APIs used by the quickstart
@@ -68,7 +75,7 @@ function handleAuthClick() {
         }
         document.getElementById('signout_button').style.visibility = 'visible';
         document.getElementById('authorize_button').innerText = 'Refresh';
-        await listMajors();
+        await getRunningData('Carol!A2:J');
     };
 
     if (gapi.client.getToken() === null) {
@@ -105,14 +112,13 @@ function handleSignoutClick() {
  * 
  * 1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY
  */
-async function listMajors() {
+async function getRunningData(data_range) {
     let response;
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY',
-            // range: 'Altino!A2:J',
-            range: 'Carol!A2:J',
+            range: data_range,
         });
     } catch (err) {
         document.getElementById('content').innerText = err.message;
@@ -124,17 +130,42 @@ async function listMajors() {
         return;
     }
 
-
     values = range.values.slice()
 
-    // Ploting charts
-    create_chart(values, 12)
-    //create_chart_pace(values)
+    create_chart(values, 12, 'Check')
     treinos_por_local(values)
     treinos_por_tipo_bubble(values)
 
     create_summary(values)
     create_list(values)
+
+    console.log(values)
+
+}
+
+var values
+
+if (TYPE == 'dev'){
+
+    fetch('./assets/mock_data.json')
+    .then((response) => response.json())
+    .then((json) => {
+        console.log(json)
+
+        values = json.altino.values
+        
+        create_chart(values, 25, 'Livre')
+        treinos_por_local(values)
+        treinos_por_tipo_bubble(values)
+        
+        create_summary(values)
+        create_list(values)
+
+    });
+
+    $("#authorize_button").hide()
+    $("#link_carol").hide()
+    $("#link_altino").hide()
 
 }
 
@@ -142,7 +173,7 @@ $(document).ready(function () {
     
     $("#procurar_atividade").on("keyup", function() {
         var value = $(this).val().toLowerCase();
-        $("#tabela_lista tr").filter(function() {
+        $("#tabela_lista tbody tr").filter(function() {
           $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
       });
@@ -152,7 +183,7 @@ $(document).ready(function () {
             $('#check_plot').html("");
             create_chart_pace(values)
         } else {
-            create_chart(values, 12)
+            create_chart(values, 12, 'Velocidade')
         }
     });
 
@@ -164,7 +195,7 @@ $(document).ready(function () {
 function create_summary(dados) {
 
     var info = get_general_info(dados)
-    var time = `${info.horas}:${info.minutos}:${info.seg}`
+    var time = `${info.horas}h:${info.minutos}min`
     
     $('#resumo_qtd_atividades').html(info.total_atividades)
     $('#resumo_km').html(info.distancia + "<span> km</span>")
@@ -179,6 +210,8 @@ function create_summary(dados) {
 function create_list(dados) {
 
     var reverse_values = dados.slice().reverse();
+
+    $("tbody").html("");
 
     reverse_values.forEach(element => {
 
@@ -316,7 +349,7 @@ function create_chart_pace(dados) {
 
     var pace_f = `${parseInt(avg / 60)}:${parseInt(avg % 60)}`
 
-    for (i = 0; i < pace.length; i++) {
+    for (var i = 0; i < pace.length; i++) {
         avg_values.push(avg)
     }
 
@@ -398,9 +431,9 @@ function create_chart_pace(dados) {
 
 }
 
-function create_chart(dados, meta_value) {
+function create_chart(dados, meta_value, tipo_treino) {
 
-    var result = dados.filter(element => element[8] == 'Check')
+    var result = dados.filter(element => element[8] == tipo_treino)
 
     let x_ = []
     let y_ = []
@@ -415,7 +448,7 @@ function create_chart(dados, meta_value) {
         sec.push(element[2] + "min" + element[3] + "seg")
     })
 
-    for (i = 0; i < result.length; i++){
+    for (var i = 0; i < result.length; i++){
         avg_values_meta.push(meta_value)
     }
 
@@ -475,8 +508,8 @@ function create_chart(dados, meta_value) {
     var layout = {
 
         yaxis: {
-            autorange: false,
-            range: [11, 16],
+            autorange: true,
+            // range: [11, 16],
             type: 'linear',
             automargin: true
         },
