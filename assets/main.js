@@ -598,7 +598,8 @@ function treinos_por_local(dados) {
             t: 30,
             pad: 10
         },
-        title: false
+        title: false,
+        height: 380
     };
 
     Plotly.newPlot("locais_plot", data, layout, {
@@ -666,7 +667,8 @@ function treinos_por_tipo(dados) {
             t: 30,
             pad: 10
         },
-        title: false
+        title: false,
+        height: 380
     };
 
     Plotly.newPlot("tipos_plot", data, layout, {
@@ -721,7 +723,8 @@ function treinos_por_tipo_bubble(dados) {
             b: 50,
             t: 40,
             pad: 10
-        }
+        },
+        height: 380
     };
 
     Plotly.newPlot("locais_plot_bubble", data, layout, {
