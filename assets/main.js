@@ -1,4 +1,4 @@
-const TYPE = 'prod';
+const TYPE = 'dev';
 let CLIENT_ID = '';
 
 if (TYPE == 'test')
@@ -189,7 +189,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.navbar-nav>li>a').on('click', function(){
+    $('a.close-link').on('click', function(){
         $('.navbar-collapse').collapse('hide');
     });
 })
