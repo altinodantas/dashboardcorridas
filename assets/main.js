@@ -152,11 +152,12 @@ if (TYPE == 'dev'){
     .then((json) => {
         console.log(json)
 
-        values = json.altino.values
+        values = json.carol.values
         
         create_chart(values, 12, 'Check')
         treinos_por_local(values)
         treinos_por_tipo_bubble(values)
+        treinos_por_tipo(values)
         
         create_summary(values)
         create_list(values)
@@ -164,8 +165,8 @@ if (TYPE == 'dev'){
     });
 
     $("#authorize_button").hide()
-    $("#link_carol").hide()
-    $("#link_altino").hide()
+    // $("#link_carol").hide()
+    // $("#link_altino").hide()
 
 }
 
@@ -364,10 +365,10 @@ function create_chart_pace(dados) {
         type: 'scatter',
         mode: 'lines+markers',
         marker: {
-            size: 12
+            size: 8
         },
         line: {
-            width: 5,
+            width: 3,
             shape: 'spline',
             color: 'rgb(108, 54, 241)'
         },
@@ -481,7 +482,7 @@ function create_chart(dados, meta_value, tipo_treino) {
             size: 10
         },
         line: {
-            width: 4,
+            width: 3,
             shape: 'spline',
             color: 'rgb(108, 54, 241)'
         },
@@ -496,7 +497,7 @@ function create_chart(dados, meta_value, tipo_treino) {
         type: 'scatter',
         mode: 'lines',
         line: {
-            width: 4,
+            width: 3,
             shape: 'spline'
         },
         name: 'meta',
@@ -600,6 +601,74 @@ function treinos_por_local(dados) {
     };
 
     Plotly.newPlot("locais_plot", data, layout, {
+        displayModeBar: false
+    });
+}
+
+function treinos_por_tipo(dados) {
+
+    var dict = {};
+    var quantidade_ativiades = {}
+    var ritmo_por_tipo = {}
+
+    dados.forEach(element => {
+        var tipo_corrida = element[8]
+        if (tipo_corrida in dict){
+            dict[tipo_corrida] += parseFloat(element[1])
+            ritmo_por_tipo[tipo_corrida] += parseFloat(element[6])
+            quantidade_ativiades[tipo_corrida] += 1
+        }
+        else{
+            dict[tipo_corrida] = parseFloat(element[1])
+            ritmo_por_tipo[tipo_corrida] = parseFloat(element[6])
+            quantidade_ativiades[tipo_corrida] = 1
+        }
+    })
+
+    var distacia = Object.values(dict);
+    var tipos = Object.keys(dict);
+    var quantidade_ativiades_values =  Object.values(quantidade_ativiades);
+    var ritmo_por_tipo_value = Object.values(ritmo_por_tipo)
+
+    var avg_distancias = []
+    var avg_ritmo_por_tipo_value = []
+
+    for (var i = 0;i < distacia.length; i++){
+        avg_distancias.push(distacia[i]/quantidade_ativiades_values[i]);
+        var pace = ritmo_por_tipo_value[i]/quantidade_ativiades_values[i]
+        avg_ritmo_por_tipo_value.push(`${parseInt(pace / 60)}:${parseInt(pace % 60)}/km`);
+    }
+
+    // var pace_f = `${parseInt(avg / 60)}:${parseInt(avg % 60)}`
+    
+    var data = [{
+        x: tipos,
+        y: avg_distancias,
+        type: "bar",
+        hovertemplate: '<b>%{x}</b><br>Distância: <b>%{y:.2f}</b>km<br>Pace: <b>%{text}</b><extra></extra>',
+        text: avg_ritmo_por_tipo_value
+    }];
+
+    var layout = {
+        yaxis: {
+            automargin: true
+        },
+        colorway: ['#603ce1'],
+        legend: {
+            orientation: 'h',
+            x: 0.1
+        },
+        margin: {
+            l: 10,
+            r: 10,
+            b: 30,
+            t: 30,
+            pad: 10
+        },
+        title: false
+    };
+
+    Plotly.newPlot("tipos_plot", data, layout, {
         displayModeBar: false
     });
 }
