@@ -154,7 +154,7 @@ if (TYPE == 'dev'){
 
         values = json.altino.values
         
-        create_chart(values, 25, 'Livre')
+        create_chart(values, 12, 'Check')
         treinos_por_local(values)
         treinos_por_tipo_bubble(values)
         
@@ -183,7 +183,7 @@ $(document).ready(function () {
             $('#check_plot').html("");
             create_chart_pace(values)
         } else {
-            create_chart(values, 12, 'Velocidade')
+            create_chart(values, 12, 'Check')
         }
     });
 
