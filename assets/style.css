@@ -96,6 +96,8 @@ a.anchor {
     padding: 10px;
 }
 
+.dropdown-menu a {color: #6639e9;}
+
 .resumo_text {
     font-size: 0.8rem;
 }
