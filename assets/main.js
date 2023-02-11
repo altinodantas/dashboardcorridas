@@ -135,6 +135,7 @@ async function getRunningData(data_range) {
     create_chart(values, 12, 'Check')
     treinos_por_local(values)
     treinos_por_tipo_bubble(values)
+    treinos_por_tipo(values)
 
     create_summary(values)
     create_list(values)
