@@ -402,12 +402,14 @@ function create_chart_pace(dados) {
             // range: [11, 16],
             type: 'linear',
             automargin: true,
-            title: 'Pace médio (seg)'
+            title: 'Pace médio (seg)',
+            fixedrange: true
         },
         xaxis: {
             automargin: true,
             showgrid: false,
-            tickcolor: '#000'
+            tickcolor: '#000',
+            fixedrange: true
         },
 
         showlegend: true,
@@ -513,12 +515,14 @@ function create_chart(dados, meta_value, tipo_treino) {
             autorange: true,
             // range: [11, 16],
             type: 'linear',
-            automargin: true
+            automargin: true,
+            fixedrange: true
         },
         xaxis: {
             automargin: true,
             showgrid: false,
-            tickcolor: '#000'
+            tickcolor: '#000',
+            fixedrange: true
         },
 
         showlegend: true,
@@ -584,7 +588,12 @@ function treinos_por_local(dados) {
 
     var layout = {
         yaxis: {
-            automargin: true
+            automargin: true,
+            fixedrange: true
+        },
+        xaxis: {
+            automargin: true,
+            fixedrange: true
         },
         colorway: ['#6c36f1'],
         legend: {
@@ -653,7 +662,12 @@ function treinos_por_tipo(dados) {
 
     var layout = {
         yaxis: {
-            automargin: true
+            automargin: true,
+            fixedrange: true
+        },
+        xaxis: {
+            automargin: true,
+            fixedrange: true
         },
         colorway: ['#603ce1'],
         legend: {
@@ -714,7 +728,12 @@ function treinos_por_tipo_bubble(dados) {
     var layout = {
 
         yaxis: {
-            automargin: true
+            automargin: true,
+            fixedrange: true
+        },
+        xaxis: {
+            automargin: true,
+            fixedrange: true
         },
         colorway: ['#6c36f1'],
         margin: {
