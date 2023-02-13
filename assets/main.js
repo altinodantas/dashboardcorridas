@@ -20,8 +20,8 @@ let tokenClient;
 let gapiInited = false;
 let gisInited = false;
 
-document.getElementById('authorize_button').style.visibility = 'hidden';
-document.getElementById('signout_button').style.visibility = 'hidden';
+document.getElementById('li_authorize_button').style.visibility = 'hidden';
+document.getElementById('li_signout_button').style.visibility = 'hidden';
 
 /**
  * Callback after api.js is loaded.
@@ -61,7 +61,7 @@ function gisLoaded() {
  */
 function maybeEnableButtons() {
     if (gapiInited && gisInited) {
-        document.getElementById('authorize_button').style.visibility = 'visible';
+        document.getElementById('li_authorize_button').style.visibility = 'visible';
     }
 }
 
@@ -73,7 +73,7 @@ function handleAuthClick() {
         if (resp.error !== undefined) {
             throw (resp);
         }
-        document.getElementById('signout_button').style.visibility = 'visible';
+        document.getElementById('li_signout_button').style.visibility = 'visible';
         document.getElementById('authorize_button').innerText = 'Refresh';
         await getRunningData('Carol!A2:J');
     };
@@ -102,7 +102,7 @@ function handleSignoutClick() {
         gapi.client.setToken('');
         document.getElementById('content').innerText = '';
         document.getElementById('authorize_button').innerText = 'Authorize';
-        document.getElementById('signout_button').style.visibility = 'hidden';
+        document.getElementById('li_signout_button').style.visibility = 'hidden';
     }
 }
 
@@ -166,8 +166,8 @@ if (TYPE == 'dev'){
     });
 
     $("#authorize_button").hide()
-    // $("#link_carol").hide()
-    // $("#link_altino").hide()
+    $("#link_carol").hide()
+    $("#link_altino").hide()
 
 }
 
@@ -179,6 +179,14 @@ $(document).ready(function () {
           $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
       });
+
+    $("#reset_button").on("click", function() {
+        $("#procurar_atividade").val("");
+        var value = "";
+        $("#tabela_lista tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
 
     $('input[type=radio][name=btnradio]').change(function () {
         if ($(this).attr('id') == 'pace_radio') {
