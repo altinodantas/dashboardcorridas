@@ -1,4 +1,4 @@
-const TYPE = 'prod';
+const TYPE = 'dev';
 let CLIENT_ID = '';
 
 if (TYPE == 'test')
@@ -402,8 +402,10 @@ function create_chart_pace(dados) {
             // range: [11, 16],
             type: 'linear',
             automargin: true,
-            title: 'Pace médio (seg)',
-            fixedrange: true
+            title: {text:'Pace médio (seg)',
+            standoff: 20
+            },
+            fixedrange: true,
         },
         xaxis: {
             automargin: true,
