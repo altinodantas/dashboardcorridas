@@ -75,11 +75,12 @@ function handleAuthClick() {
         }
         document.getElementById('li_signout_button').style.visibility = 'visible';
         document.getElementById('authorize_button').innerText = 'Refresh';
-        await getRunningData('Carol!A2:J');
-        $("#user_name").html("Carol");
-        $("#user_icon img").attr("src", "assets/carol.png");
-        $("#user_altino").show()
-        $("#user_carol").hide()
+        await getRunningData('Carol!A2:J').then(()=>{
+            $("#user_name").html("Carol");
+            $("#user_icon img").attr("src", "assets/carol.png");
+            $("#user_altino").show()
+            $("#user_carol").hide()
+        });
     };
 
     if (gapi.client.getToken() === null) {
@@ -111,12 +112,12 @@ function handleSignoutClick() {
 }
 
 /**
- * Print the names and majors of students in a sample spreadsheet:
- * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+ * Get data from the running log spreadsheet:
+ * https://docs.google.com/spreadsheets/d/1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY/edit
  * 
- * 1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY
  */
 async function getRunningData(data_range) {
+    $("#loading").show()
     let response;
     try {
         // Fetch first 10 files
@@ -136,7 +137,12 @@ async function getRunningData(data_range) {
 
     values = range.values.slice()
 
-    create_chart(values, 12, 'Check')
+    if(data_range.split("!")[0] == 'Carol'){
+        create_chart(values, 12, 'Check')
+    }else{
+        create_chart(values, 25, 'Velocidade')
+    }
+
     treinos_por_local(values)
     treinos_por_tipo_bubble(values)
     treinos_por_tipo(values)
@@ -145,6 +151,8 @@ async function getRunningData(data_range) {
     create_list(values)
 
     console.log(values)
+
+    $("#loading").hide()
 
 }
 
@@ -216,7 +224,10 @@ $(document).ready(function () {
             $('#check_plot').html("");
             create_chart_pace(values)
         } else {
-            create_chart(values, 12, 'Check')
+            if($("#user_name").html() == "Altino")
+                create_chart(values, 25, 'Velocidade')
+            else
+                create_chart(values, 12, 'Check')
         }
     });
 
