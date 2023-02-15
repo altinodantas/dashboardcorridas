@@ -32,13 +32,6 @@ body {
     text-align: left;
 
 }
-#viollet {
-    color: #6639e9;
-}
-
-#orange {
-    color: #6dae8d;
-}
 
 .table {
     padding: 0rem 0rem;
@@ -115,6 +108,26 @@ a.anchor {
 .resumo_atividade {margin-top: -30px; margin-bottom: 25px;}
 .resumo_movimento {margin-top: -10px; margin-bottom: 15px;}
 .clock {font-size: 1.4rem;}
+
+.orange, .velocidade {color: #fb851e;}
+.viollet, .livre {color: #6639e9;}
+.green, .check {color: #6dae8d;}
+.ciano, .intervalado { color: #0098d8;}
+.magenta, .subida { color: #c81d7e;}
+.black, .prova { color: #000;}
+
+#user_name {display: inline; font-weight: bold;}
+#user_icon {display: inline; margin-left: 4px; }
+#user_icon img {border: #FFF solid 1px; border-radius: 50%;}
+
+/* to remove arrow at submenu*/
+.dropdown-toggle::after {
+    display: none
+}
+
+.nav-link {
+    line-height: 38px;
+}
 
 
 @media (max-width: 767.98px) {

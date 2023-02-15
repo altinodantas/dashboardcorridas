@@ -76,6 +76,10 @@ function handleAuthClick() {
         document.getElementById('li_signout_button').style.visibility = 'visible';
         document.getElementById('authorize_button').innerText = 'Refresh';
         await getRunningData('Carol!A2:J');
+        $("#user_name").html("Carol");
+        $("#user_icon img").attr("src", "assets/carol.png");
+        $("#user_altino").show()
+        $("#user_carol").hide()
     };
 
     if (gapi.client.getToken() === null) {
@@ -154,6 +158,9 @@ if (TYPE == 'dev'){
         console.log(json)
 
         values = json.carol.values
+
+        $("#user_altino").show()
+        $("#user_name").html("Carol")
         
         create_chart(values, 12, 'Check')
         treinos_por_local(values)
@@ -163,15 +170,31 @@ if (TYPE == 'dev'){
         create_summary(values)
         create_list(values)
 
+        
     });
-
+    
     $("#authorize_button").hide()
-    $("#link_carol").hide()
-    $("#link_altino").hide()
+    
+    // $("#user_carol").show()
+    // $("#user_altino").hide()
 
 }
 
 $(document).ready(function () {
+    
+    $("#user_altino").on('click', function(){
+        $(this).hide();
+        $("#user_name").html("Altino");
+        $("#user_icon img").attr("src", "assets/altino.png");
+        $("#user_carol").show()
+    });
+
+    $("#user_carol").on('click', function(){
+        $(this).hide();
+        $("#user_name").html("Carol");
+        $("#user_icon img").attr("src", "assets/carol.png");
+        $("#user_altino").show()
+    });
     
     $("#procurar_atividade").on("keyup", function() {
         var value = $(this).val().toLowerCase();
@@ -226,11 +249,12 @@ function create_list(dados) {
     reverse_values.forEach(element => {
 
         var tipo = ``
+        var tipo_lowcase = element[8].toLowerCase()
 
         if (element[8] == "Check")
-            tipo = `<i class="bi bi-check-circle-fill" id="orange"></i> ${element[8]}`
+            tipo = `<i class="bi bi-check-circle-fill green"></i> ${element[8]}`
         else
-            tipo = `<i class="bi bi-circle-fill" id="viollet"></i> ${element[8]}`
+            tipo = `<i class="bi bi-circle-fill ${tipo_lowcase}"></i> ${element[8]}`
 
         var html = `<tr class="pt-3">
                       <td class="pt-3">${convert_date(element[0])}</td>
