@@ -10,11 +10,11 @@ else
 const API_KEY = 'AIzaSyB2Mf_OmGx2FoJH4wRAJkLr05BJ9r7IhvY';
 
 // Discovery doc URL for APIs used by the quickstart
-const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+const DISCOVERY_DOC = ['https://sheets.googleapis.com/$discovery/rest?version=v4', 'https://people.googleapis.com/$discovery/rest'];
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly profile';
 
 let tokenClient;
 let gapiInited = false;
@@ -37,7 +37,7 @@ function gapiLoaded() {
 async function initializeGapiClient() {
     await gapi.client.init({
         apiKey: API_KEY,
-        discoveryDocs: [DISCOVERY_DOC],
+        discoveryDocs: DISCOVERY_DOC,
     });
     gapiInited = true;
     maybeEnableButtons();
@@ -75,13 +75,16 @@ function handleAuthClick() {
         }
         document.getElementById('li_signout_button').style.visibility = 'visible';
         document.getElementById('authorize_button').innerText = 'Refresh';
-        await getRunningData('Carol!A2:J').then(()=>{
-            $("#user_name").html("Carol");
-            $("#user_icon img").attr("src", "assets/carol.png");
-            $("#user_altino").show()
-            $("#user_carol").hide()
-        });
+        await getProfile();
+        // await getRunningData('Carol!A2:J').then(()=>{
+        //     //$("#user_name").html("Carol");
+        //     // $("#user_icon img").attr("src", "assets/carol.png");
+        //     $("#user_altino").show()
+        //     $("#user_carol").hide()
+        // });
+
     };
+
 
     if (gapi.client.getToken() === null) {
         // Prompt the user to select a Google Account and ask for consent to share their data
@@ -111,20 +114,25 @@ function handleSignoutClick() {
     }
 }
 
+
 /**
  * Get data from the running log spreadsheet:
  * https://docs.google.com/spreadsheets/d/1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY/edit
  * 
  */
 async function getRunningData(data_range) {
+
     $("#loading").show()
     let response;
+
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY',
             range: data_range,
         });
+
+
     } catch (err) {
         document.getElementById('content').innerText = err.message;
         return;
@@ -138,9 +146,11 @@ async function getRunningData(data_range) {
     values = range.values.slice()
 
     if(data_range.split("!")[0] == 'Carol'){
-        create_chart(values, 12, 'Check')
+        create_chart(values, 12, 'Check');
+        $("#monitoramento span").html("Carol");
     }else{
-        create_chart(values, 25, 'Velocidade')
+        create_chart(values, 25, 'Velocidade');
+        $("#monitoramento span").html("Altino");
     }
 
     treinos_por_local(values)
@@ -153,6 +163,42 @@ async function getRunningData(data_range) {
     console.log(values)
 
     $("#loading").hide()
+
+}
+
+async function getProfile() {
+
+    let profile;
+
+    try {
+
+        profile = await gapi.client.people.people.get({
+            'resourceName': 'people/me',
+            'personFields': 'names,emailAddresses,photos'
+          });
+
+
+    } catch (err) {
+        document.getElementById('content').innerText = err.message;
+        return;
+    }
+
+    if(profile.result.names[0].displayName == "Altino Dantas"){
+        await getRunningData('Altino!A2:J').then(()=>{
+            $("#user_altino").show();
+            $("#user_carol").show();
+        })
+    }else{
+        await getRunningData('Carol!A2:J').then(()=>{
+            $("#user_altino").show();
+            $("#user_carol").show();
+        })
+    }
+
+    console.log(profile.result.photos[0].url)
+
+    $("#user_icon img").attr("src", profile.result.photos[0].url);
+    $("#user_name").html(profile.result.names[0].displayName);
 
 }
 
@@ -190,19 +236,19 @@ if (TYPE == 'dev'){
 
 $(document).ready(function () {
     
-    $("#user_altino").on('click', function(){
-        $(this).hide();
-        $("#user_name").html("Altino");
-        $("#user_icon img").attr("src", "assets/altino.png");
-        $("#user_carol").show()
-    });
+    // $("#user_altino").on('click', function(){
+    //     $(this).hide();
+    //     $("#user_name").html("Altino");
+    //     $("#user_icon img").attr("src", "assets/altino.png");
+    //     $("#user_carol").show()
+    // });
 
-    $("#user_carol").on('click', function(){
-        $(this).hide();
-        $("#user_name").html("Carol");
-        $("#user_icon img").attr("src", "assets/carol.png");
-        $("#user_altino").show()
-    });
+    // $("#user_carol").on('click', function(){
+    //     $(this).hide();
+    //     $("#user_name").html("Carol");
+    //     $("#user_icon img").attr("src", "assets/carol.png");
+    //     $("#user_altino").show()
+    // });
     
     $("#procurar_atividade").on("keyup", function() {
         var value = $(this).val().toLowerCase();
@@ -224,7 +270,7 @@ $(document).ready(function () {
             $('#check_plot').html("");
             create_chart_pace(values)
         } else {
-            if($("#user_name").html() == "Altino")
+            if($("#monitoramento span").html() == "Altino")
                 create_chart(values, 25, 'Velocidade')
             else
                 create_chart(values, 12, 'Check')
