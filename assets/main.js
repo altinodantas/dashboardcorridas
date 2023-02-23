@@ -187,18 +187,19 @@ async function getProfile() {
         await getRunningData('Altino!A2:J').then(()=>{
             $("#user_altino").show();
             $("#user_carol").show();
+        }).then(()=>{
+            $("#user_icon img").attr("src", profile.result.photos[0].url);
+            $("#user_name").html(profile.result.names[0].displayName);
         })
     }else{
         await getRunningData('Carol!A2:J').then(()=>{
             $("#user_altino").show();
             $("#user_carol").show();
+        }).then(()=>{
+            $("#user_icon img").attr("src", profile.result.photos[0].url);
+            $("#user_name").html(profile.result.names[0].displayName);
         })
     }
-
-    console.log(profile.result.photos[0].url)
-
-    $("#user_icon img").attr("src", profile.result.photos[0].url);
-    $("#user_name").html(profile.result.names[0].displayName);
 
 }
 
