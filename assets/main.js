@@ -351,7 +351,7 @@ function get_general_info(dados) {
 
     return {
         "total_atividades": total_atividades,
-        "distancia": distancia,
+        "distancia": distancia.toFixed(2),
         "elevacao": elevacao,
         "ultimo_treino": {
             "data": ultimo_treino_data,
