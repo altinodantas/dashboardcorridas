@@ -1,4 +1,4 @@
-const TYPE = 'prod';
+const TYPE = 'dev';
 let CLIENT_ID = '';
 
 if (TYPE == 'test')
@@ -154,7 +154,7 @@ async function getRunningData(data_range) {
     }
 
     treinos_por_local(values)
-    treinos_por_tipo_bubble(values)
+    treinos_por_distancias(values)
     treinos_por_tipo(values)
 
     create_summary(values)
@@ -219,7 +219,7 @@ if (TYPE == 'dev'){
         
         create_chart(values, 12, 'Check')
         treinos_por_local(values)
-        treinos_por_tipo_bubble(values)
+        treinos_por_distancias(values)
         treinos_por_tipo(values)
         
         create_summary(values)
@@ -489,7 +489,6 @@ function create_chart_pace(dados) {
 
         yaxis: {
             autorange: true,
-            // range: [11, 16],
             type: 'linear',
             automargin: true,
             title: {text:'Pace médio (seg)',
@@ -522,6 +521,77 @@ function create_chart_pace(dados) {
     };
 
     Plotly.newPlot('check_plot', data, layout, {
+        displayModeBar: false
+    });
+
+}
+
+function treinos_por_distancias(dados) {
+
+    let tipos_treino = {}
+
+    dados.forEach(element => {
+
+        let tipo_treino = element[8];
+
+        if (tipo_treino in tipos_treino){
+
+            tipos_treino[tipo_treino].kms.push(parseInt(element[1]).toString() + "km");
+            tipos_treino[tipo_treino].paces.push(parseFloat(element[6]));
+            tipos_treino[tipo_treino].paces_f.push(element[7]+"/km");
+
+        }else{
+            let kms = [parseInt(element[1]).toString() + "km"];
+            let pace = [parseFloat(element[6])];
+            let pace_f = [element[7]+"/km"];
+            tipos_treino[tipo_treino] = {"kms":kms, "paces":pace, "paces_f":pace_f} ;
+        }
+
+    })
+
+    let colous = ['#fb851e','#6639e9', '#6dae8d', '#0098d8', '#c81d7e', '#000']
+
+    let datum = []
+    
+    Object.keys(tipos_treino).forEach((element, i) => {
+        
+        datum.push({
+            x: tipos_treino[element].kms,
+            y: tipos_treino[element].paces,
+            mode: 'markers',
+            type: 'scatter',
+            name: element,
+            marker: { size: 10, color: colous[i]},
+            hovertemplate: ' %{text}<extra></extra>',
+            text: tipos_treino[element].paces_f,
+        })
+        
+    })
+
+    var layout = {
+        yaxis: {
+            automargin: true,
+            fixedrange: true
+        },
+        xaxis: {
+            automargin: true,
+            fixedrange: true
+        },
+        legend: {
+            orientation: 'h',
+        },
+        margin: {
+            l: 10,
+            r: 10,
+            b: 30,
+            t: 30,
+            pad: 10
+        },
+        title: false,
+        height: 380
+    };
+
+    Plotly.newPlot("locais_plot_bubble", datum, layout, {
         displayModeBar: false
     });
 
