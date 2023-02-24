@@ -1,4 +1,4 @@
-const TYPE = 'dev';
+const TYPE = 'prod';
 let CLIENT_ID = '';
 
 if (TYPE == 'test')
@@ -212,7 +212,7 @@ if (TYPE == 'dev'){
     .then((json) => {
         console.log(json)
 
-        values = json.carol.values
+        values = json.altino.values
 
         $("#user_altino").show()
         $("#user_name").html("Carol")
@@ -561,7 +561,7 @@ function treinos_por_distancias(dados) {
             mode: 'markers',
             type: 'scatter',
             name: element,
-            marker: { size: 10, color: colous[i]},
+            marker: { size: 12, color: colous[i]},
             hovertemplate: ' %{text}<extra></extra>',
             text: tipos_treino[element].paces_f,
         })
