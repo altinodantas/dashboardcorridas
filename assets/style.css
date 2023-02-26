@@ -13,6 +13,7 @@ body {
     box-shadow: rgba(109, 105, 105, 0.15) 4px 4px 25px 0px;
     overflow: hidden;
     padding: 15px;
+    margin-top: 20px;
 }
 
 .block h3 {
@@ -31,6 +32,9 @@ body {
     margin: 10px;
     text-align: left;
 
+}
+.mensagens {
+    margin-top: 10px;
 }
 
 .table {

@@ -14,7 +14,7 @@ const DISCOVERY_DOC = ['https://sheets.googleapis.com/$discovery/rest?version=v4
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly profile';
+const SCOPES = 'profile https://www.googleapis.com/auth/spreadsheets';
 
 let tokenClient;
 let gapiInited = false;
@@ -134,12 +134,14 @@ async function getRunningData(data_range) {
 
 
     } catch (err) {
-        document.getElementById('content').innerText = err.message;
+        create_alert(`<strong>OPS!</strong> Erro ao tentar acessar: ${data_range}`, "danger");
+        console.error(err.message)
         return;
     }
     const range = response.result;
     if (!range || !range.values || range.values.length == 0) {
         document.getElementById('content').innerText = 'No values found.';
+        create_alert(`<strong>OPS!</strong> Sem registros no intervalo: ${data_range}`, "danger");
         return;
     }
 
@@ -187,7 +189,7 @@ async function getProfile() {
         await getRunningData('Altino!A2:J').then(()=>{
             $("#user_altino").show();
             $("#user_carol").show();
-        }).then(()=>{
+        
             $("#user_icon img").attr("src", profile.result.photos[0].url);
             $("#user_name").html(profile.result.names[0].displayName);
         })
@@ -195,12 +197,134 @@ async function getProfile() {
         await getRunningData('Carol!A2:J').then(()=>{
             $("#user_altino").show();
             $("#user_carol").show();
-        }).then(()=>{
+        
             $("#user_icon img").attr("src", profile.result.photos[0].url);
             $("#user_name").html(profile.result.names[0].displayName);
         })
     }
 
+}
+
+async function addActivity() {
+
+    let spreadsheet_range;
+
+    if ($("#user_name").html() == "Altino Dantas")
+        spreadsheet_range = 'Altino!A2:J'
+    else
+        spreadsheet_range = 'Carol!A2:J'
+
+    let date        = $('#inputDate').val();
+    let distance    = $('#inputDistancia').val();
+    let minutes     = $('#inputMinutos').val();
+    let secondes    = $('#inputSegundos').val();
+    let elevation   = $('#inputElevacao').val()
+    let time        = $('#inputHorario').val();
+    let type        = $('#inputTipo').val();
+    let place       = $('#inputLocal').val();
+
+    if(!date || !distance || !minutes || !secondes || !elevation || !time || !type || !place){
+        return
+    }
+
+    var params = {
+        spreadsheetId: '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY',
+        range: spreadsheet_range,
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+    };
+
+    var valueRangeBody = {
+        "values": [
+            [
+                date,
+                parseFloat(distance),
+                parseInt(minutes),
+                parseInt(secondes),
+                parseInt(elevation),
+                time,
+                getPace(distance, minutes, secondes).pace,
+                getPace(distance, minutes, secondes).pace_f,
+                type,
+                place
+            ]
+        ]
+    };
+
+    let request;
+
+    try {
+
+        request = await gapi.client.sheets.spreadsheets.values.append(params, valueRangeBody).then((res)=>{
+            document.getElementById("add_activity").reset();
+            if(res.result)
+                create_alert(`<strong>${res.result.updates.updatedRange}</strong> Dados foram adicionados na planinha com sucesso`, "success");
+        });
+        await getRunningData(spreadsheet_range);
+
+    } catch (err) {
+        create_alert(`Dados não foram adicionados na planilha.`, "danger");
+        return;
+    }
+
+}
+
+async function clearActivity(line_number){
+
+    // console.log(spreadsheet_range_to_clear + " " + spreadsheet_range)
+    var spreadsheet_range;
+    var spreadsheet_range_to_clear;
+
+    // Captura o usuário logado e o usuários cujos dados estão sendo exibidos
+    var user_of_data = $("#monitoramento span").html();
+    var user_name    = $("#user_name").html().split(" ")[0]
+
+    console.log(user_of_data + " " + user_name)
+    
+    // Evita que um usuário dele dados de outro usuário
+    if (user_of_data != user_name){
+        create_alert(`<strong>OPS!</strong> Você não tem permissão para apagar dados de ${user_of_data}`, "danger");
+        return
+    }
+
+    spreadsheet_range = `${user_of_data}!A2:J`;
+    spreadsheet_range_to_clear = `${user_of_data}!A${line_number}:J${line_number}`;
+
+
+    var params = {
+        spreadsheetId: '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY',
+        range: spreadsheet_range_to_clear,  
+      };
+
+      var clearValuesRequestBody = {};
+
+      let request;
+
+      try {
+
+        request = await gapi.client.sheets.spreadsheets.values.clear(params, clearValuesRequestBody).then((res)=>{
+           
+            if(res.result)
+                create_alert(`<strong>${res.result.clearedRange}</strong> Dados removidos com sucesso`, "warning");
+        });
+        await getRunningData(spreadsheet_range);
+
+    } catch (err) {
+        create_alert(`Erro ao tentar remover dados.`, "danger");
+        return;
+    }
+
+}
+
+
+/**
+ * Get pace given **distance**, **minutes** and **secondes**:
+ * 
+ */
+function getPace(distance, minutes, secondes){
+    let pace = ((parseInt(minutes) * 60) + parseInt(secondes)) / parseInt(distance);
+    let pace_f = `${parseInt(pace / 60)}:${Math.ceil(pace % 60)}`;
+    return {"pace": pace, "pace_f":pace_f};
 }
 
 var values
@@ -212,7 +336,7 @@ if (TYPE == 'dev'){
     .then((json) => {
         console.log(json)
 
-        values = json.altino.values
+        values = json.carol.values
 
         $("#user_altino").show()
         $("#user_name").html("Carol")
@@ -236,20 +360,6 @@ if (TYPE == 'dev'){
 }
 
 $(document).ready(function () {
-    
-    // $("#user_altino").on('click', function(){
-    //     $(this).hide();
-    //     $("#user_name").html("Altino");
-    //     $("#user_icon img").attr("src", "assets/altino.png");
-    //     $("#user_carol").show()
-    // });
-
-    // $("#user_carol").on('click', function(){
-    //     $(this).hide();
-    //     $("#user_name").html("Carol");
-    //     $("#user_icon img").attr("src", "assets/carol.png");
-    //     $("#user_altino").show()
-    // });
     
     $("#procurar_atividade").on("keyup", function() {
         var value = $(this).val().toLowerCase();
@@ -303,8 +413,10 @@ function create_list(dados) {
     var reverse_values = dados.slice().reverse();
 
     $("tbody").html("");
-
-    reverse_values.forEach(element => {
+    
+    reverse_values.forEach((element,index) => {
+   
+        var spreadsheet_line = reverse_values.length - index + 1
 
         var tipo = ``
         var tipo_lowcase = element[8].toLowerCase()
@@ -321,6 +433,11 @@ function create_list(dados) {
                       <td class="pt-3">${element[7]}/km</td>
                       <td class="pt-3">${tipo}</td>
                       <td class="pt-3">${element[9]}</td>
+                      <td class="pt-3">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#confirmClearModal" data-bs-whatever="${spreadsheet_line}">
+                            <i class="bi bi-trash3-fill"></i> 
+                        </a>
+                      </td>
                     </tr>`
         $("tbody").append(html);
 
@@ -912,3 +1029,35 @@ function treinos_por_tipo_bubble(dados) {
         displayModeBar: false
     });
 }
+
+function create_alert(text, color){
+
+    let html = `<div class="alert alert-${color} alert-dismissible fade show" role="alert">
+                    ${text}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`
+
+    $(".mensagens").html(html)
+
+}
+
+const confirmClearModal = document.getElementById('confirmClearModal')
+confirmClearModal.addEventListener('show.bs.modal', event => {
+
+  const button = event.relatedTarget
+  
+  const recipient = button.getAttribute('data-bs-whatever')
+  
+  const modalTitle = confirmClearModal.querySelector('.modal-title')
+  const modalBodyInput = confirmClearModal.querySelector('.modal-body input')
+  const modalSubmitButton = confirmClearModal.querySelector('#apagar')
+
+  modalSubmitButton.setAttribute("onclick", `clearActivity(${recipient})`)
+
+  modalTitle.textContent = `Excluir atividade da linha ${recipient}`
+  modalBodyInput.value = recipient
+})
+
+confirmClearModal.addEventListener('hidden.bs.modal', event => {
+    $("html, body").animate({ scrollTop: 0 }, "fast");
+})

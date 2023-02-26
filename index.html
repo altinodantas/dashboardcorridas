@@ -21,7 +21,7 @@
 </head>
 
 <body>
-  <div id="loading"><img id="loading-image" src="assets/loading-gif.gif" alt="Loading..." width="48px"/></div>
+  <div id="loading"><img id="loading-image" src="assets/loading-gif.gif" alt="Loading..." width="48px" /></div>
   <a class="anchor" id="topo_anchor"></a>
   <nav id="topo" class="navbar navbar-expand-lg fixed-top navbar-dark"
     style="background-image: linear-gradient(to right, #6c36f1 , #6d37f0);">
@@ -75,11 +75,75 @@
 
 
   <div class="container">
-    <div id="content"></div>
+    <div id="content">
+    </div>
 
-    <div class="row g-1" id="meta">
+    <div class="mensagens">
+
+    </div>
+
+    <div class="block">
+      <h3>Adicionar Atividade</h2>
+        <form class="" id="add_activity">
+          <div class="p-2">
+            <div class="row g-2 align-items-end">
+
+              <div class="col">
+                <label for="inputDate" class="form-label">Data:</label>
+                <input type="text" class="form-control" id="inputDate" placeholder="20/02/2023" required>
+              </div>
+              <div class="col">
+                <label for="inputDistancia" class="form-label">Distância:</label>
+                <input type="number" class="form-control" id="inputDistancia" placeholder="10.5" required>
+              </div>
+              <div class="col">
+                <label for="inputMinutos" class="form-label">Minutos:</label>
+                <input type="number" class="form-control" id="inputMinutos" placeholder="25" required>
+              </div>
+              <div class="col">
+                <label for="inputSegundos" class="form-label">Segundos:</label>
+                <input type="number" class="form-control" id="inputSegundos" placeholder="10" required>
+              </div>
+              <div class="col">
+                <label for="inputElevacao" class="form-label">Elevação(m):</label>
+                <input type="number" class="form-control" id="inputElevacao" placeholder="6" required>
+              </div>
+              <div class="col">
+                <label for="inputHorario" class="form-label">Horário:</label>
+                <input type="text" class="form-control" id="inputHorario" placeholder="18:10" required>
+              </div>
+              <div class="col">
+                <label for="inputTipo" class="form-label">Tipo:</label>
+                <select class="form-select" aria-label="Tipo de treino" id="inputTipo" required>
+                  <option value="" selected>Selecione</option>
+                  <option value="Livre">Livre</option>
+                  <option value="Intervalado">Intervalado</option>
+                  <option value="Prova">Prova</option>
+                  <option value="Subida">Subida</option>
+                  <option value="Tiro">Tiro</option>
+                  <option value="Check">Check</option>
+                  <option value="Velocidade">Velocidade</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="inputLocal" class="form-label">Local:</label>
+                <input type="text" class="form-control" id="inputLocal" placeholder="Perto de Casa" required>
+              </div>
+
+              <div class="col">
+
+                <button class="btn btn-warning w-100" type="submit" onclick="addActivity()">Salvar</button>
+              </div>
+
+            </div>
+          </div>
+        </form>
+
+    </div>
+
+    <div class="row g-4" id="meta">
       <div class="col-lg-9 col-md-8">
-        <div class="p-3">
+        <div class="p-0">
           <div class="block">
             <a class="anchor" id="check_anchor"></a>
 
@@ -110,7 +174,7 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-4">
-        <div class="p-3">
+        <div class="p-0">
           <div class="block text-center">
             <div class="resumo">
 
@@ -168,9 +232,9 @@
       </div>
     </div>
 
-    <div class="row g-1">
+    <div class="row g-4">
       <div class="col-lg-4 col-md-6">
-        <div class="p-3">
+        <div class="p-0">
           <div class="block">
             <h4>Treinos por Local</h4>
             <div id='locais_plot'></div>
@@ -178,7 +242,7 @@
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
-        <div class="p-3">
+        <div class="p-0">
           <div class="block">
             <h4>Tipos de treino</h4>
             <div id='locais_plot_bubble'></div>
@@ -186,7 +250,7 @@
         </div>
       </div>
       <div class="col-lg-4 col-md-12">
-        <div class="p-3">
+        <div class="p-0">
           <div class="block">
             <h4>Média de Distância e Pace</h4>
             <div id='tipos_plot'></div>
@@ -196,7 +260,7 @@
     </div>
 
 
-    <div class="p-3">
+    <div class="p-0">
       <div class="block">
         <div id='lista'>
           <a class="anchor" id="activities_anchor"></a>
@@ -205,13 +269,13 @@
               <h4>Últimas atividades</h4>
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <form>
-                  <div class="input-group mb-3">
-                    <input placeholder="procurar" class="form-control" type="text" name="find_text_table"
-                      id="procurar_atividade" />
-                    <button class="btn btn-dark" type="reset" id="reset_button">&times;</button>
-                  </div>
-                </form>
+              <form>
+                <div class="input-group mb-3">
+                  <input placeholder="procurar" class="form-control" type="text" name="find_text_table"
+                    id="procurar_atividade" />
+                  <button class="btn btn-dark" type="reset" id="reset_button">&times;</button>
+                </div>
+              </form>
 
             </div>
           </div>
@@ -226,6 +290,7 @@
                   <th scope="col"><i class="bi bi-watch"></i> Rítimo</th>
                   <th scope="col"><i class="bi bi-circle-fill"></i> Tipo</th>
                   <th scope="col"><i class="bi bi-geo-alt-fill"></i> Local</th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -240,6 +305,24 @@
     </div>
 
 
+  </div>
+
+  <div class="modal fade" id="confirmClearModal" tabindex="-1" aria-labelledby="confirmClearModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="confirmClearModalLabel">Confirmação</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Deseja realmente apagar a atividades?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="apagar" data-bs-dismiss="modal">Apagar</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="p-3"></div>
