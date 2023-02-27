@@ -128,10 +128,16 @@ a.anchor {
 }
 .resumo_data { text-align: right;}
 .resumo_ultimo { text-align: left;}
-.resumo_local_icon {font-size: 1.8rem; margin-bottom: 0px; margin-top: 5px;}
+.resumo_local_icon {font-size: 1.8rem; margin-bottom: 0px; margin-top: -10px;}
 .resumo_local { font-size: 1.2rem; font-weight: 300; margin: 0;}
-.resumo_pace {font-size: 2.4rem; font-weight: bolder; margin: -8px;}
-.resumo_pace span{font-size: 1.2rem; font-weight: 200;}
+
+.resumo_pace {font-size: 1.8rem; font-weight: bolder; margin: -8px;}
+.resumo_pace span{font-size: 1rem; font-weight: 200;}
+
+.resumo_distancia {font-size: 4rem; font-weight: bolder; margin: -8px;letter-spacing: 1px; margin-bottom: -25px;}
+.resumo_distancia span{font-size: 1.2rem; font-weight: 200; }
+
+.resumo_horario {font-size: 1.8rem; font-weight: bolder; margin: -8px;}
 
 #resumo_qtd_atividades {font-size: 6rem; font-weight: 600;}
 #resumo_km {font-size: 1rem; font-weight: 300;}
