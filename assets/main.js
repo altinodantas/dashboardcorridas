@@ -1,4 +1,4 @@
-const TYPE = 'prod';
+const TYPE = 'dev';
 let CLIENT_ID = '';
 
 if (TYPE == 'test')
@@ -347,6 +347,8 @@ if (TYPE == 'dev') {
             create_summary(values)
             create_list(values)
 
+            console.log(get_general_info(values).melhor_treino)
+
 
         });
 
@@ -403,6 +405,8 @@ function create_summary(dados) {
     $('#resumo_data').html(convert_date(info.ultimo_treino.data))
     $('.resumo_local').html(info.ultimo_treino.local)
     $('.resumo_pace').html(info.ultimo_treino.pace + "<span>/km</span>")
+    $('.resumo_distancia').html(info.ultimo_treino.distancia + "<span>km</span>")
+    $('.resumo_horario').html(info.ultimo_treino.hora)
 
 }
 
@@ -447,18 +451,42 @@ function get_general_info(dados) {
     var total_atividades = dados.length
     var distancia = 0
     var elevacao = 0
-    var ultimo_treino_data = dados[total_atividades - 1][0]
-    var ultimo_treino_local = dados[total_atividades - 1][9]
-    var ultimo_treino_pace = dados[total_atividades - 1][7]
     var segundos = 0
     var horas = 0
     var minutos = 0
     var seg = 0
 
+    var melhor_treino = {
+        "data": dados[0][0],
+        "local": dados[0][9],
+        "pace": dados[0][7],
+        "pace_seg": dados[0][6],
+        "distancia": dados[0][1],
+        "hora": dados[0][5]
+    }
+    var ultimo_treino = {
+        "data": dados[total_atividades - 1][0],
+        "local": dados[total_atividades - 1][9],
+        "pace": dados[total_atividades - 1][7],
+        "distancia": dados[total_atividades - 1][1],
+        "hora": dados[total_atividades - 1][5]
+    }
+
     dados.forEach(element => {
         distancia += parseFloat(element[1])
         elevacao += parseInt(element[4])
         segundos += (parseInt(element[2]) * 60) + parseInt(element[3])
+
+        // look for the best pace
+
+        if(parseFloat(element[6]) < parseFloat(melhor_treino.pace_seg)){
+            melhor_treino.data  = element[0];
+            melhor_treino.local = element[9];
+            melhor_treino.pace  = element[7];
+            melhor_treino.pace_seg = element[6];
+            melhor_treino.distancia = element[1];
+            melhor_treino.hora  = element[5];
+        }
     })
 
     horas = parseInt(segundos / 3600)
@@ -469,11 +497,8 @@ function get_general_info(dados) {
         "total_atividades": total_atividades,
         "distancia": distancia.toFixed(2),
         "elevacao": elevacao,
-        "ultimo_treino": {
-            "data": ultimo_treino_data,
-            "local": ultimo_treino_local,
-            "pace": ultimo_treino_pace
-        },
+        "ultimo_treino": ultimo_treino,
+        "melhor_treino": melhor_treino,
         "segundos": segundos,
         "horas": horas,
         "minutos": minutos,
