@@ -1,4 +1,4 @@
-const TYPE = 'dev';
+const TYPE = 'prod';
 let CLIENT_ID = '';
 
 if (TYPE == 'test')
