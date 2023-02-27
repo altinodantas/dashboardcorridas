@@ -16,6 +16,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
+  <link rel="stylesheet" href="assets/css/datepicker.css">
+
   <link href="assets/style.css" rel="stylesheet">
 
 </head>
@@ -24,7 +26,7 @@
   <div id="loading"><img id="loading-image" src="assets/loading-gif.gif" alt="Loading..." width="48px" /></div>
   <a class="anchor" id="topo_anchor"></a>
   <nav id="topo" class="navbar navbar-expand-lg fixed-top navbar-dark"
-    style="background-image: linear-gradient(to right, #6c36f1 , #6d37f0);">
+    style="background-image: linear-gradient(to right, #6c36f1 , #7843f2);">
     <div class="container">
       <a class="navbar-brand me-auto" href="#topo_anchor">
         <h1><b>Dashboard</b> | Corridas </h1>
@@ -37,6 +39,9 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link close-link" href="#add_anchor">Adicionar</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link close-link" href="#check_anchor">Desempenho</a>
           </li>
@@ -71,48 +76,47 @@
     </div>
   </nav>
 
-  <div style="height: 100px;"></div>
+  <div class="padding_topo"></div>
 
 
   <div class="container">
     <div id="content">
     </div>
 
-    <div class="mensagens">
-
-    </div>
+    <div class="mensagens"></div>
 
     <div class="block">
+      <a class="anchor" id="add_anchor"></a>
       <h3>Adicionar Atividade</h2>
         <form class="" id="add_activity">
           <div class="p-2">
             <div class="row g-2 align-items-end">
 
-              <div class="col">
-                <label for="inputDate" class="form-label">Data:</label>
-                <input type="text" class="form-control" id="inputDate" placeholder="20/02/2023" required>
+              <div class="col-lg col-4 col-sm-3">
+                <label for="inputDate" class="form-label btn">Data:</label>
+                <input type="text" class="form-control" id="inputDate" placeholder="20/02/2023" readonly required autocomplete="off">
               </div>
-              <div class="col">
+              <div class="col-lg col-4 col-sm-3">
                 <label for="inputDistancia" class="form-label">Distância:</label>
                 <input type="number" class="form-control" id="inputDistancia" placeholder="10.5" required>
               </div>
-              <div class="col">
+              <div class="col-lg col-4 col-sm-3">
                 <label for="inputMinutos" class="form-label">Minutos:</label>
                 <input type="number" class="form-control" id="inputMinutos" placeholder="25" required>
               </div>
-              <div class="col">
+              <div class="col-lg col-4 col-sm-3">
                 <label for="inputSegundos" class="form-label">Segundos:</label>
                 <input type="number" class="form-control" id="inputSegundos" placeholder="10" required>
               </div>
-              <div class="col">
+              <div class="col-lg col-4 col-sm-3">
                 <label for="inputElevacao" class="form-label">Elevação(m):</label>
                 <input type="number" class="form-control" id="inputElevacao" placeholder="6" required>
               </div>
-              <div class="col">
+              <div class="col-lg col-4 col-sm-3">
                 <label for="inputHorario" class="form-label">Horário:</label>
-                <input type="text" class="form-control" id="inputHorario" placeholder="18:10" required>
+                <input type="time" class="form-control" id="inputHorario" placeholder="18:10" required>
               </div>
-              <div class="col">
+              <div class="col-lg col-4 col-sm-3">
                 <label for="inputTipo" class="form-label">Tipo:</label>
                 <select class="form-select" aria-label="Tipo de treino" id="inputTipo" required>
                   <option value="" selected>Selecione</option>
@@ -125,12 +129,12 @@
                   <option value="Velocidade">Velocidade</option>
                 </select>
               </div>
-              <div class="col">
+              <div class="col-lg col-4 col-sm-3">
                 <label for="inputLocal" class="form-label">Local:</label>
                 <input type="text" class="form-control" id="inputLocal" placeholder="Perto de Casa" required>
               </div>
 
-              <div class="col">
+              <div class="col-lg col-4 col-sm-3">
 
                 <button class="btn btn-warning w-100" type="button" onclick="addActivity()">Salvar</button>
               </div>
@@ -175,7 +179,7 @@
       </div>
       <div class="col-lg-3 col-md-4">
         <div class="p-0">
-          <div class="block text-center">
+          <div class="block_ text-center">
             <div class="resumo">
 
               <div id="info">
@@ -307,7 +311,8 @@
 
   </div>
 
-  <div class="modal fade" id="confirmClearModal" tabindex="-1" aria-labelledby="confirmClearModalLabel" aria-hidden="true">
+  <div class="modal fade" id="confirmClearModal" tabindex="-1" aria-labelledby="confirmClearModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -332,10 +337,12 @@
 
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"
     integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
     crossorigin="anonymous"></script>
+  <script src="assets/js/datepicker.js"></script>
+  <script src="assets/js/locale/pt-BR.js"></script>
+
 
   <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
   <script src='assets/main.js'></script>

@@ -3,7 +3,7 @@ let CLIENT_ID = '';
 
 if (TYPE == 'test')
     CLIENT_ID = "192707284225-74pk61g5bnkkh5biec579v5gasel67us.apps.googleusercontent.com"; // local
-else 
+else
     CLIENT_ID = "192707284225-tsjg3e79vl6papuv6okjla6ntapc7hsa.apps.googleusercontent.com"; // github
 
 
@@ -76,12 +76,6 @@ function handleAuthClick() {
         document.getElementById('li_signout_button').style.visibility = 'visible';
         document.getElementById('authorize_button').innerText = 'Refresh';
         await getProfile();
-        // await getRunningData('Carol!A2:J').then(()=>{
-        //     //$("#user_name").html("Carol");
-        //     // $("#user_icon img").attr("src", "assets/carol.png");
-        //     $("#user_altino").show()
-        //     $("#user_carol").hide()
-        // });
 
     };
 
@@ -147,10 +141,10 @@ async function getRunningData(data_range) {
 
     values = range.values.slice()
 
-    if(data_range.split("!")[0] == 'Carol'){
+    if (data_range.split("!")[0] == 'Carol') {
         create_chart(values, 12, 'Check');
         $("#monitoramento span").html("Carol");
-    }else{
+    } else {
         create_chart(values, 25, 'Velocidade');
         $("#monitoramento span").html("Altino");
     }
@@ -177,7 +171,7 @@ async function getProfile() {
         profile = await gapi.client.people.people.get({
             'resourceName': 'people/me',
             'personFields': 'names,emailAddresses,photos'
-          });
+        });
 
 
     } catch (err) {
@@ -185,19 +179,19 @@ async function getProfile() {
         return;
     }
 
-    if(profile.result.names[0].displayName == "Altino Dantas"){
-        await getRunningData('Altino!A2:J').then(()=>{
+    if (profile.result.names[0].displayName == "Altino Dantas") {
+        await getRunningData('Altino!A2:J').then(() => {
             $("#user_altino").show();
             $("#user_carol").show();
-        
+
             $("#user_icon img").attr("src", profile.result.photos[0].url);
             $("#user_name").html(profile.result.names[0].displayName);
         })
-    }else{
-        await getRunningData('Carol!A2:J').then(()=>{
+    } else {
+        await getRunningData('Carol!A2:J').then(() => {
             $("#user_altino").show();
             $("#user_carol").show();
-        
+
             $("#user_icon img").attr("src", profile.result.photos[0].url);
             $("#user_name").html(profile.result.names[0].displayName);
         })
@@ -214,16 +208,17 @@ async function addActivity() {
     else
         spreadsheet_range = 'Carol!A2:J'
 
-    let date        = $('#inputDate').val();
-    let distance    = $('#inputDistancia').val();
-    let minutes     = $('#inputMinutos').val();
-    let secondes    = $('#inputSegundos').val();
-    let elevation   = $('#inputElevacao').val()
-    let time        = $('#inputHorario').val();
-    let type        = $('#inputTipo').val();
-    let place       = $('#inputLocal').val();
+    let date = $('#inputDate').val();
+    let distance = $('#inputDistancia').val();
+    let minutes = $('#inputMinutos').val();
+    let secondes = $('#inputSegundos').val();
+    let elevation = $('#inputElevacao').val()
+    let time = $('#inputHorario').val();
+    let type = $('#inputTipo').val();
+    let place = $('#inputLocal').val();
 
-    if(!date || !distance || !minutes || !secondes || !elevation || !time || !type || !place){
+    if (!date || !distance || !minutes || !secondes || !elevation || !time || !type || !place) {
+        create_alert(`<strong>OPS!</strong> Preencha todos os campos da atividade.`, "warning");
         return
     }
 
@@ -255,9 +250,9 @@ async function addActivity() {
 
     try {
 
-        request = await gapi.client.sheets.spreadsheets.values.append(params, valueRangeBody).then((res)=>{
+        request = await gapi.client.sheets.spreadsheets.values.append(params, valueRangeBody).then((res) => {
             document.getElementById("add_activity").reset();
-            if(res.result)
+            if (res.result)
                 create_alert(`<strong>${res.result.updates.updatedRange}</strong> Dados foram adicionados na planinha com sucesso`, "success");
         });
         await getRunningData(spreadsheet_range);
@@ -269,7 +264,7 @@ async function addActivity() {
 
 }
 
-async function clearActivity(line_number){
+async function clearActivity(line_number) {
 
     // console.log(spreadsheet_range_to_clear + " " + spreadsheet_range)
     var spreadsheet_range;
@@ -277,12 +272,12 @@ async function clearActivity(line_number){
 
     // Captura o usuário logado e o usuários cujos dados estão sendo exibidos
     var user_of_data = $("#monitoramento span").html();
-    var user_name    = $("#user_name").html().split(" ")[0]
+    var user_name = $("#user_name").html().split(" ")[0]
 
     console.log(user_of_data + " " + user_name)
-    
+
     // Evita que um usuário dele dados de outro usuário
-    if (user_of_data != user_name){
+    if (user_of_data != user_name) {
         create_alert(`<strong>OPS!</strong> Você não tem permissão para apagar dados de ${user_of_data}`, "danger");
         return
     }
@@ -293,18 +288,18 @@ async function clearActivity(line_number){
 
     var params = {
         spreadsheetId: '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY',
-        range: spreadsheet_range_to_clear,  
-      };
+        range: spreadsheet_range_to_clear,
+    };
 
-      var clearValuesRequestBody = {};
+    var clearValuesRequestBody = {};
 
-      let request;
+    let request;
 
-      try {
+    try {
 
-        request = await gapi.client.sheets.spreadsheets.values.clear(params, clearValuesRequestBody).then((res)=>{
-           
-            if(res.result)
+        request = await gapi.client.sheets.spreadsheets.values.clear(params, clearValuesRequestBody).then((res) => {
+
+            if (res.result)
                 create_alert(`<strong>${res.result.clearedRange}</strong> Dados removidos com sucesso`, "warning");
         });
         await getRunningData(spreadsheet_range);
@@ -321,57 +316,60 @@ async function clearActivity(line_number){
  * Get pace given **distance**, **minutes** and **secondes**:
  * 
  */
-function getPace(distance, minutes, secondes){
+function getPace(distance, minutes, secondes) {
     let pace = ((parseInt(minutes) * 60) + parseInt(secondes)) / parseInt(distance);
     let pace_f = `${parseInt(pace / 60)}:${Math.ceil(pace % 60)}`;
-    return {"pace": pace, "pace_f":pace_f};
+    return {
+        "pace": pace,
+        "pace_f": pace_f
+    };
 }
 
 var values
 
-if (TYPE == 'dev'){
+if (TYPE == 'dev') {
 
     fetch('./assets/mock_data.json')
-    .then((response) => response.json())
-    .then((json) => {
-        console.log(json)
+        .then((response) => response.json())
+        .then((json) => {
+            console.log(json)
 
-        values = json.carol.values
+            values = json.carol.values
 
-        $("#user_altino").show()
-        $("#user_name").html("Carol")
-        
-        create_chart(values, 12, 'Check')
-        treinos_por_local(values)
-        treinos_por_distancias(values)
-        treinos_por_tipo(values)
-        
-        create_summary(values)
-        create_list(values)
+            $("#user_altino").show()
+            $("#user_name").html("Carol")
 
-        
-    });
-    
+            create_chart(values, 12, 'Check')
+            treinos_por_local(values)
+            treinos_por_distancias(values)
+            treinos_por_tipo(values)
+
+            create_summary(values)
+            create_list(values)
+
+
+        });
+
     $("#authorize_button").hide()
-    
+
     // $("#user_carol").show()
     // $("#user_altino").hide()
 
 }
 
 $(document).ready(function () {
-    
-    $("#procurar_atividade").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#tabela_lista tbody tr").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
 
-    $("#reset_button").on("click", function() {
+    $("#procurar_atividade").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#tabela_lista tbody tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+    $("#reset_button").on("click", function () {
         $("#procurar_atividade").val("");
         var value = "";
-        $("#tabela_lista tbody tr").filter(function() {
+        $("#tabela_lista tbody tr").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
@@ -381,14 +379,14 @@ $(document).ready(function () {
             $('#check_plot').html("");
             create_chart_pace(values)
         } else {
-            if($("#monitoramento span").html() == "Altino")
+            if ($("#monitoramento span").html() == "Altino")
                 create_chart(values, 25, 'Velocidade')
             else
                 create_chart(values, 12, 'Check')
         }
     });
 
-    $('a.close-link').on('click', function(){
+    $('a.close-link').on('click', function () {
         $('.navbar-collapse').collapse('hide');
     });
 })
@@ -397,7 +395,7 @@ function create_summary(dados) {
 
     var info = get_general_info(dados)
     var time = `${info.horas}h:${info.minutos}min`
-    
+
     $('#resumo_qtd_atividades').html(info.total_atividades)
     $('#resumo_km').html(info.distancia + "<span> km</span>")
     $('#resumo_tempo_total').html(time)
@@ -413,9 +411,9 @@ function create_list(dados) {
     var reverse_values = dados.slice().reverse();
 
     $("tbody").html("");
-    
-    reverse_values.forEach((element,index) => {
-   
+
+    reverse_values.forEach((element, index) => {
+
         var spreadsheet_line = reverse_values.length - index + 1
 
         var tipo = ``
@@ -608,8 +606,9 @@ function create_chart_pace(dados) {
             autorange: true,
             type: 'linear',
             automargin: true,
-            title: {text:'Pace médio (seg)',
-            standoff: 20
+            title: {
+                text: 'Pace médio (seg)',
+                standoff: 20
             },
             fixedrange: true,
         },
@@ -651,38 +650,45 @@ function treinos_por_distancias(dados) {
 
         let tipo_treino = element[8];
 
-        if (tipo_treino in tipos_treino){
+        if (tipo_treino in tipos_treino) {
 
             tipos_treino[tipo_treino].kms.push(parseInt(element[1]).toString() + "km");
             tipos_treino[tipo_treino].paces.push(parseFloat(element[6]));
-            tipos_treino[tipo_treino].paces_f.push(element[7]+"/km");
+            tipos_treino[tipo_treino].paces_f.push(element[7] + "/km");
 
-        }else{
+        } else {
             let kms = [parseInt(element[1]).toString() + "km"];
             let pace = [parseFloat(element[6])];
-            let pace_f = [element[7]+"/km"];
-            tipos_treino[tipo_treino] = {"kms":kms, "paces":pace, "paces_f":pace_f} ;
+            let pace_f = [element[7] + "/km"];
+            tipos_treino[tipo_treino] = {
+                "kms": kms,
+                "paces": pace,
+                "paces_f": pace_f
+            };
         }
 
     })
 
-    let colous = ['#fb851e','#6639e9', '#6dae8d', '#0098d8', '#c81d7e', '#000']
+    let colous = ['#fb851e', '#6639e9', '#6dae8d', '#0098d8', '#c81d7e', '#000']
 
     let datum = []
-    
+
     Object.keys(tipos_treino).forEach((element, i) => {
-        
+
         datum.push({
             x: tipos_treino[element].kms,
             y: tipos_treino[element].paces,
             mode: 'markers',
             type: 'scatter',
             name: element,
-            marker: { size: 12, color: colous[i]},
+            marker: {
+                size: 12,
+                color: colous[i]
+            },
             hovertemplate: ' %{text}<extra></extra>',
             text: tipos_treino[element].paces_f,
         })
-        
+
     })
 
     var layout = {
@@ -731,7 +737,7 @@ function create_chart(dados, meta_value, tipo_treino) {
         sec.push(element[2] + "min" + element[3] + "seg")
     })
 
-    for (var i = 0; i < result.length; i++){
+    for (var i = 0; i < result.length; i++) {
         avg_values_meta.push(meta_value)
     }
 
@@ -903,12 +909,11 @@ function treinos_por_tipo(dados) {
 
     dados.forEach(element => {
         var tipo_corrida = element[8]
-        if (tipo_corrida in dict){
+        if (tipo_corrida in dict) {
             dict[tipo_corrida] += parseFloat(element[1])
             ritmo_por_tipo[tipo_corrida] += parseFloat(element[6])
             quantidade_ativiades[tipo_corrida] += 1
-        }
-        else{
+        } else {
             dict[tipo_corrida] = parseFloat(element[1])
             ritmo_por_tipo[tipo_corrida] = parseFloat(element[6])
             quantidade_ativiades[tipo_corrida] = 1
@@ -917,20 +922,20 @@ function treinos_por_tipo(dados) {
 
     var distacia = Object.values(dict);
     var tipos = Object.keys(dict);
-    var quantidade_ativiades_values =  Object.values(quantidade_ativiades);
+    var quantidade_ativiades_values = Object.values(quantidade_ativiades);
     var ritmo_por_tipo_value = Object.values(ritmo_por_tipo)
 
     var avg_distancias = []
     var avg_ritmo_por_tipo_value = []
 
-    for (var i = 0;i < distacia.length; i++){
-        avg_distancias.push(distacia[i]/quantidade_ativiades_values[i]);
-        var pace = ritmo_por_tipo_value[i]/quantidade_ativiades_values[i]
+    for (var i = 0; i < distacia.length; i++) {
+        avg_distancias.push(distacia[i] / quantidade_ativiades_values[i]);
+        var pace = ritmo_por_tipo_value[i] / quantidade_ativiades_values[i]
         avg_ritmo_por_tipo_value.push(`${parseInt(pace / 60)}:${parseInt(pace % 60)}/km`);
     }
 
     // var pace_f = `${parseInt(avg / 60)}:${parseInt(avg % 60)}`
-    
+
     var data = [{
         x: tipos,
         y: avg_distancias,
@@ -1030,7 +1035,7 @@ function treinos_por_tipo_bubble(dados) {
     });
 }
 
-function create_alert(text, color){
+function create_alert(text, color) {
 
     let html = `<div class="alert alert-${color} alert-dismissible fade show" role="alert">
                     ${text}
@@ -1044,20 +1049,28 @@ function create_alert(text, color){
 const confirmClearModal = document.getElementById('confirmClearModal')
 confirmClearModal.addEventListener('show.bs.modal', event => {
 
-  const button = event.relatedTarget
-  
-  const recipient = button.getAttribute('data-bs-whatever')
-  
-  const modalTitle = confirmClearModal.querySelector('.modal-title')
-  const modalBodyInput = confirmClearModal.querySelector('.modal-body input')
-  const modalSubmitButton = confirmClearModal.querySelector('#apagar')
+    const button = event.relatedTarget
 
-  modalSubmitButton.setAttribute("onclick", `clearActivity(${recipient})`)
+    const recipient = button.getAttribute('data-bs-whatever')
 
-  modalTitle.textContent = `Excluir atividade da linha ${recipient}`
-  modalBodyInput.value = recipient
+    const modalTitle = confirmClearModal.querySelector('.modal-title')
+    const modalBodyInput = confirmClearModal.querySelector('.modal-body input')
+    const modalSubmitButton = confirmClearModal.querySelector('#apagar')
+
+    modalSubmitButton.setAttribute("onclick", `clearActivity(${recipient})`)
+
+    modalTitle.textContent = `Excluir atividade da linha ${recipient}`
 })
 
 confirmClearModal.addEventListener('hidden.bs.modal', event => {
-    $("html, body").animate({ scrollTop: 0 }, "fast");
+    $("html, body").animate({
+        scrollTop: 0
+    }, "fast");
 })
+
+const elem = document.querySelector('#inputDate');
+const datepicker = new Datepicker(elem, {
+    buttonClass: 'btn',
+    language: 'pt-BR',
+    autohide: true,
+});
