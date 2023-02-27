@@ -25,8 +25,7 @@
 <body>
   <div id="loading"><img id="loading-image" src="assets/loading-gif.gif" alt="Loading..." width="48px" /></div>
   <a class="anchor" id="topo_anchor"></a>
-  <nav id="topo" class="navbar navbar-expand-lg fixed-top navbar-dark"
-    style="background-image: linear-gradient(to right, #6c36f1 , #7843f2);">
+  <nav id="topo" class="navbar navbar-expand-lg fixed-top navbar-dark">
     <div class="container">
       <a class="navbar-brand me-auto" href="#topo_anchor">
         <h1><b>Dashboard</b> | Corridas </h1>
@@ -40,7 +39,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link close-link" href="#add_anchor">Adicionar</a>
+            <a class="nav-link close-link" href="#add_anchor"><i class="bi bi-plus-circle-fill"></i></a>
           </li>
           <li class="nav-item">
             <a class="nav-link close-link" href="#check_anchor">Desempenho</a>
@@ -92,25 +91,41 @@
           <div class="p-2">
             <div class="row g-2 align-items-end">
 
-              <div class="col-lg col-4 col-sm-3">
-                <label for="inputDate" class="form-label btn">Data:</label>
-                <input type="text" class="form-control" id="inputDate" placeholder="20/02/2023" readonly required autocomplete="off">
+              <div class="col-xl col-lg-3 col-4 col-sm-3">
+                <label for="inputDate" class="form-label">Data:</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="inputDate" placeholder="20/02/2023" readonly required autocomplete="off">
+                  <span class="input-group-text"><i class="bi bi-calendar-check"></i></span>
+                </div>
+
               </div>
-              <div class="col-lg col-4 col-sm-3">
+              <div class="col-xl col-lg-3 col-4 col-sm-3">
                 <label for="inputDistancia" class="form-label">Distância:</label>
-                <input type="number" class="form-control" id="inputDistancia" placeholder="10.5" required>
+                <div class="input-group">
+                  <input type="number" class="form-control" id="inputDistancia" placeholder="10.5" required>
+                  <span class="input-group-text">km</span>
+                </div>
               </div>
-              <div class="col-lg col-4 col-sm-3">
+              <div class="col-xl col-lg-3 col-4 col-sm-3">
                 <label for="inputMinutos" class="form-label">Minutos:</label>
-                <input type="number" class="form-control" id="inputMinutos" placeholder="25" required>
+                <div class="input-group">
+                  <input type="number" class="form-control" id="inputMinutos" placeholder="25" required>
+                  <span class="input-group-text">min</span>
+                </div>
               </div>
-              <div class="col-lg col-4 col-sm-3">
+              <div class="col-xl col-lg-3 col-4 col-sm-3">
                 <label for="inputSegundos" class="form-label">Segundos:</label>
-                <input type="number" class="form-control" id="inputSegundos" placeholder="10" required>
+                <div class="input-group">
+                  <input type="number" class="form-control" id="inputSegundos" placeholder="10" required>
+                  <span class="input-group-text">seg</span>
+                </div>
               </div>
               <div class="col-lg col-4 col-sm-3">
-                <label for="inputElevacao" class="form-label">Elevação(m):</label>
-                <input type="number" class="form-control" id="inputElevacao" placeholder="6" required>
+                <label for="inputElevacao" class="form-label">Elevação:</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" id="inputElevacao" placeholder="6" required>
+                  <span class="input-group-text">m</span>
+                </div>
               </div>
               <div class="col-lg col-4 col-sm-3">
                 <label for="inputHorario" class="form-label">Horário:</label>
@@ -136,7 +151,7 @@
 
               <div class="col-lg col-4 col-sm-3">
 
-                <button class="btn btn-warning w-100" type="button" onclick="addActivity()">Salvar</button>
+                <button class="btn btn-warning w-100" type="button" onclick="addActivity()"><i class="bi bi-plus-circle"></i> Salvar</button>
               </div>
 
             </div>
@@ -248,7 +263,7 @@
       <div class="col-lg-4 col-md-6">
         <div class="p-0">
           <div class="block">
-            <h4>Tipos de treino</h4>
+            <h4>Pace por distâncias</h4>
             <div id='locais_plot_bubble'></div>
           </div>
         </div>
@@ -270,7 +285,7 @@
           <a class="anchor" id="activities_anchor"></a>
           <div class="row">
             <div class="col-sm-6 col-md-8 col-lg-9">
-              <h4>Últimas atividades</h4>
+              <h4>Últimas Atividades</h4>
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3">
               <form>
@@ -285,7 +300,7 @@
           </div>
           <div class="table-responsive">
 
-            <table class="table table-borderless" id="tabela_lista">
+            <table class="table table-borderless table-hover" id="tabela_lista">
               <thead>
                 <tr>
                   <th scope="col"><i class="bi bi-calendar-check-fill"></i> Data</th>
@@ -294,7 +309,7 @@
                   <th scope="col"><i class="bi bi-watch"></i> Rítimo</th>
                   <th scope="col"><i class="bi bi-circle-fill"></i> Tipo</th>
                   <th scope="col"><i class="bi bi-geo-alt-fill"></i> Local</th>
-                  <th scope="col"></th>
+                  <th scope="col"><i class="bi bi-gear-fill"></i></th>
                 </tr>
               </thead>
               <tbody>
@@ -323,7 +338,7 @@
           <p>Deseja realmente apagar a atividades?</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
           <button type="button" class="btn btn-danger" id="apagar" data-bs-dismiss="modal">Apagar</button>
         </div>
       </div>
@@ -331,7 +346,7 @@
   </div>
 
   <div class="p-3"></div>
-  <p class="text-center" id="creditos">AC Running Viewer &#169;. Todos os direitos reservados.</p>
+  <p class="text-center" id="creditos">AC Running Data Viewer &#169;. Todos os direitos reservados.</p>
   <div class="p-3"></div>
 
 

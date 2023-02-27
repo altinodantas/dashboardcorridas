@@ -47,11 +47,23 @@ body {
     margin-top: 10px;
 }
 
+#tabela_lista a {
+    color: darkgray;
+}
+
+#tabela_lista a:hover {
+    color: #e01414;
+}
+
 .table {
     padding: 0rem 0rem;
 }
 
 .table th {white-space: nowrap;}
+
+.table-hover thead tr:hover th, .table-hover tbody tr:hover td {
+    background: #fafafa !important;
+}
 
 .btn-rounded {
     border-radius: 50px;
@@ -94,6 +106,10 @@ a.anchor {
     position: relative;
     top: -125px;
     visibility: hidden;
+}
+
+#topo {
+    background-image: linear-gradient(to right, #6639e9 , #8555f5);
 }
 
 .padding_topo {height: 90px;}
