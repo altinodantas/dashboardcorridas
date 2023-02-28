@@ -317,7 +317,7 @@ async function clearActivity(line_number) {
  * 
  */
 function getPace(distance, minutes, secondes) {
-    let pace = ((parseInt(minutes) * 60) + parseInt(secondes)) / parseInt(distance);
+    let pace = ((parseInt(minutes) * 60) + parseInt(secondes)) / parseFloat(distance);
     let pace_f = `${parseInt(pace / 60)}:${Math.ceil(pace % 60)}`;
     return {
         "pace": pace,
