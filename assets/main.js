@@ -401,7 +401,7 @@ function create_summary(dados) {
     $('#resumo_qtd_atividades').html(info.total_atividades)
     $('#resumo_km').html(info.distancia + "<span> km</span>")
     $('#resumo_tempo_total').html(time)
-    $('#resumo_elevacao').html(info.elevacao + "<span> metros</span>")
+    $('#resumo_elevacao').html(info.elevacao + "<span> m</span>")
     $('#resumo_data').html(convert_date(info.ultimo_treino.data))
     $('.resumo_local').html(info.ultimo_treino.local)
     $('.resumo_pace').html(info.ultimo_treino.pace + "<span>/km</span>")

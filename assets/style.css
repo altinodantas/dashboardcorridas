@@ -43,6 +43,7 @@ body {
     text-align: left;
 
 }
+
 .mensagens {
     margin-top: 10px;
 }
@@ -59,16 +60,19 @@ body {
     padding: 0rem 0rem;
 }
 
-.table th {white-space: nowrap;}
+.table th {
+    white-space: nowrap;
+}
 
-.table-hover thead tr:hover th, .table-hover tbody tr:hover td {
+.table-hover thead tr:hover th,
+.table-hover tbody tr:hover td {
     background: #fafafa !important;
 }
 
 .btn-rounded {
     border-radius: 50px;
     padding: 5px 15px;
-  }
+}
 
 #info h1 {
 
@@ -76,6 +80,7 @@ body {
     font-weight: 700;
 
 }
+
 nav#topo h1 {
     letter-spacing: -2px;
 }
@@ -88,16 +93,20 @@ nav#topo h1 {
     padding: 12px;
 }
 
-.navbar-expand-lg a{
+.navbar-expand-lg a {
     color: #fff;
 }
-.navbar-expand-lg a:hover, .navbar-expand-lg a:active{
+
+.navbar-expand-lg a:hover,
+.navbar-expand-lg a:active {
     color: #fb851e;
 }
 
 /* .active { color: #fb851e;} */
 
-.navbar-brand, .navbar-toggler, .navbar-toggler-icon{
+.navbar-brand,
+.navbar-toggler,
+.navbar-toggler-icon {
     color: #fff;
 }
 
@@ -109,10 +118,12 @@ a.anchor {
 }
 
 #topo {
-    background-image: linear-gradient(to right, #6639e9 , #8555f5);
+    background-image: linear-gradient(to right, #6639e9, #8555f5);
 }
 
-.padding_topo {height: 90px;}
+.padding_topo {
+    height: 90px;
+}
 
 .resumo_dark_block {
     background-color: #6639e9;
@@ -121,43 +132,148 @@ a.anchor {
     padding: 10px;
 }
 
-.dropdown-menu a {color: #6639e9;}
+.dropdown-menu a {
+    color: #6639e9;
+}
 
 .resumo_text {
     font-size: 0.8rem;
 }
-.resumo_data { text-align: right;}
-.resumo_ultimo { text-align: left;}
-.resumo_local_icon {font-size: 1.8rem; margin-bottom: 0px; margin-top: -10px;}
-.resumo_local { font-size: 1.2rem; font-weight: 300; margin: 0;}
 
-.resumo_pace {font-size: 1.8rem; font-weight: bolder; margin: -8px;}
-.resumo_pace span{font-size: 1rem; font-weight: 200;}
+.resumo_data {
+    text-align: right;
+}
 
-.resumo_distancia {font-size: 4rem; font-weight: bolder; margin: -8px;letter-spacing: 1px; margin-bottom: -25px;}
-.resumo_distancia span{font-size: 1.2rem; font-weight: 200; }
+.resumo_ultimo {
+    text-align: left;
+}
 
-.resumo_horario {font-size: 1.8rem; font-weight: bolder; margin: -8px;}
+.resumo_local_icon {
+    font-size: 1.8rem;
+    margin-bottom: 0px;
+    margin-top: -10px;
+}
 
-#resumo_qtd_atividades {font-size: 6rem; font-weight: 600;}
-#resumo_km {font-size: 1rem; font-weight: 300;}
-#resumo_km span, #resumo_elevacao span  {font-weight: 700;}
-#resumo_tempo_total {font-size: 2rem; font-weight: 600;}
-.resumo_atividade {margin-top: -30px; margin-bottom: 25px;}
-.resumo_movimento {margin-top: -10px; margin-bottom: 15px;}
-.clock {font-size: 1.4rem;}
+.resumo_local {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin: 0;
+}
 
-.orange, .velocidade {color: #fb851e;}
-.viollet, .livre {color: #6639e9;}
-.green, .check {color: #6dae8d;}
-.ciano, .intervalado { color: #0098d8;}
-.magenta, .subida { color: #c81d7e;}
-.black, .prova { color: #000;}
+.resumo_pace {
+    font-size: 1.8rem;
+    font-weight: bolder;
+    margin: -8px;
+}
 
-#user_carol, #user_altino { display: none;}
-#user_name {display: inline; font-weight: bold;}
-#user_icon {display: inline; margin-left: 4px; }
-#user_icon img {border: #FFF solid 1px; border-radius: 50%;}
+.resumo_pace span {
+    font-size: 1rem;
+    font-weight: 200;
+}
+
+.resumo_distancia {
+    font-size: 4rem;
+    font-weight: bolder;
+    margin: -8px;
+    letter-spacing: 1px;
+    margin-bottom: -25px;
+}
+
+.resumo_distancia span {
+    font-size: 1.2rem;
+    font-weight: 200;
+}
+
+.resumo_horario {
+    font-size: 1.8rem;
+    font-weight: bolder;
+    margin: -8px;
+}
+
+#resumo_qtd_atividades {
+    font-size: 6rem;
+    font-weight: 600;
+}
+
+#resumo_km {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+#resumo_km span,
+#resumo_elevacao span {
+    font-weight: 700;
+}
+
+#resumo_tempo_total {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.resumo_atividade {
+    margin-top: -30px;
+    margin-bottom: 25px;
+}
+
+.resumo_movimento {
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.clock {
+    font-size: 1.4rem;
+    margin-top: -10px;
+}
+
+.orange,
+.velocidade {
+    color: #fb851e;
+}
+
+.viollet,
+.livre {
+    color: #6639e9;
+}
+
+.green,
+.check {
+    color: #6dae8d;
+}
+
+.ciano,
+.intervalado {
+    color: #0098d8;
+}
+
+.magenta,
+.subida {
+    color: #c81d7e;
+}
+
+.black,
+.prova {
+    color: #000;
+}
+
+#user_carol,
+#user_altino {
+    display: none;
+}
+
+#user_name {
+    display: inline;
+    font-weight: bold;
+}
+
+#user_icon {
+    display: inline;
+    margin-left: 4px;
+}
+
+#user_icon img {
+    border: #FFF solid 1px;
+    border-radius: 50%;
+}
 
 /* to remove arrow at submenu*/
 .dropdown-toggle::after {
@@ -169,8 +285,24 @@ a.anchor {
 }
 
 
-#loading {width: 100%;height: 100%;top: 0px;left: 0px;position: fixed;display: block; z-index: 99; background-color: #ffffff;display: none;}
-#loading-image {position: absolute;top: 40%;left: 45%;z-index: 100} 
+#loading {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    z-index: 99;
+    background-color: #ffffff;
+    display: none;
+}
+
+#loading-image {
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    z-index: 100
+}
 
 
 .datepicker-dropdown .datepicker-picker {
@@ -184,7 +316,13 @@ a.anchor {
         font-size: 0.9rem;
     }
 
-    .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    .container,
+    .container-fluid,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
         --bs-gutter-x: 1.5rem;
         --bs-gutter-y: 0;
     }
@@ -195,8 +333,10 @@ a.anchor {
         top: -110px;
         visibility: hidden;
     }
-    
-    .padding_topo {height: 70px;}
+
+    .padding_topo {
+        height: 70px;
+    }
 
     .block,
     .block_ {
@@ -206,3 +346,70 @@ a.anchor {
 
 }
 
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+    .resumo_local_icon {
+        font-size: 1.8rem;
+        margin-bottom: 0px;
+        margin-top: -15px;
+    }
+    
+    .resumo_local {
+        font-size: 1rem;
+        font-weight: 300;
+        margin: 0;
+    }
+    
+    .resumo_pace {
+        font-size: 1rem;
+        font-weight: bolder;
+        margin-top: -25px;
+    }
+    
+    .resumo_pace span {
+        font-size: .8rem;
+        font-weight: 200;
+    }
+    
+    .resumo_distancia {
+        font-size: 2.8rem;
+        font-weight: bolder;
+        /* margin: -8px; */
+        letter-spacing: 1px;
+        margin-bottom: -15px;
+    }
+    
+    .resumo_distancia span {
+        font-size: 1rem;
+        font-weight: 200;
+    }
+
+    .resumo_horario {
+        font-size: 1rem;
+        font-weight: bolder;
+        /* margin: -8px; */
+        margin-top: -25px;
+    }
+
+    .clock {
+        font-size: 1.4rem;
+        margin-top: 2px;
+    }
+    
+}
+
+@media (min-width: 1200px) { 
+
+    .resumo_local_icon {
+        font-size: 1.8rem;
+        margin-top: -15px;
+    }
+    
+    #resumo_km, #resumo_elevacao{
+        font-size: 1.2rem;
+    }
+    .resumo_text {
+        font-size: .9rem;
+    }
+
+}
