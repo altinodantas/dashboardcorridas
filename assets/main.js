@@ -436,7 +436,13 @@ function create_list(dados) {
                       <td class="pt-3">${tipo}</td>
                       <td class="pt-3">${element[9]}</td>
                       <td class="pt-3">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#confirmClearModal" data-bs-whatever="${spreadsheet_line}">
+                        <a href="#" data-bs-toggle="modal" 
+                            data-bs-target="#confirmClearModal" 
+                            data-bs-whatever="${spreadsheet_line}"
+                            data-activity-date="${convert_date(element[0])}"
+                            data-activity-place="${element[9]}"
+                            data-activity-time="${element[5]}"
+                            data-activity-distance="${element[1]}">
                             <i class="bi bi-trash3-fill"></i> 
                         </a>
                       </td>
@@ -1077,14 +1083,23 @@ confirmClearModal.addEventListener('show.bs.modal', event => {
     const button = event.relatedTarget
 
     const recipient = button.getAttribute('data-bs-whatever')
+    const act_date = button.getAttribute('data-activity-date')
+    const act_place = button.getAttribute('data-activity-place')
+    const act_time = button.getAttribute('data-activity-time')
+    const act_distance = button.getAttribute('data-activity-distance')
 
     const modalTitle = confirmClearModal.querySelector('.modal-title')
-    const modalBodyInput = confirmClearModal.querySelector('.modal-body input')
     const modalSubmitButton = confirmClearModal.querySelector('#apagar')
+    const modalBody = confirmClearModal.querySelector(".modal-body")
 
     modalSubmitButton.setAttribute("onclick", `clearActivity(${recipient})`)
 
-    modalTitle.textContent = `Excluir atividade da linha ${recipient}`
+    modalTitle.textContent = `Excluir atividade Nº ${parseInt(recipient) - 1}`
+    modalBody.innerHTML = `<p>Deseja realmente apagar a atividade?</br></p>
+                             <strong>${act_date}</strong>
+                             </br>${act_time}
+                             </br>${act_distance}km
+                             </br>${act_place}`
 })
 
 confirmClearModal.addEventListener('hidden.bs.modal', event => {
