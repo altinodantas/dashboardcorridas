@@ -1,10 +1,15 @@
 const TYPE = 'prod';
 let CLIENT_ID = '';
+let SPREADSHEETID = '';
 
-if (TYPE == 'test')
+if (TYPE == 'test'){ 
     CLIENT_ID = "192707284225-74pk61g5bnkkh5biec579v5gasel67us.apps.googleusercontent.com"; // local
-else
+    SPREADSHEETID = '1KmHEKKpPAAt5Unbu0S_p2cQIpb6SgkmiO_Dfdf4eHDQ' // planilha de teste
+}
+if (TYPE == 'prod'){ 
     CLIENT_ID = "192707284225-tsjg3e79vl6papuv6okjla6ntapc7hsa.apps.googleusercontent.com"; // github
+    SPREADSHEETID = '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY' // 
+} 
 
 
 const API_KEY = 'AIzaSyB2Mf_OmGx2FoJH4wRAJkLr05BJ9r7IhvY';
@@ -122,20 +127,20 @@ async function getRunningData(data_range) {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY',
+            spreadsheetId: SPREADSHEETID,
             range: data_range,
         });
 
 
     } catch (err) {
-        create_alert(`<strong>OPS!</strong> Erro ao tentar acessar: ${data_range}`, "danger");
+        create_alert(`<strong>OPS!</strong> Erro ao tentar acessar: ${data_range}`, "danger", "mensagens");
         console.error(err.message)
         return;
     }
     const range = response.result;
     if (!range || !range.values || range.values.length == 0) {
         document.getElementById('content').innerText = 'No values found.';
-        create_alert(`<strong>OPS!</strong> Sem registros no intervalo: ${data_range}`, "danger");
+        create_alert(`<strong>OPS!</strong> Sem registros no intervalo: ${data_range}`, "danger", "mensagens");
         return;
     }
 
@@ -218,12 +223,12 @@ async function addActivity() {
     let place = $('#inputLocal').val();
 
     if (!date || !distance || !minutes || !secondes || !elevation || !time || !type || !place) {
-        create_alert(`<strong>OPS!</strong> Preencha todos os campos da atividade.`, "warning");
+        create_alert(`<strong>OPS!</strong> Preencha todos os campos da atividade.`, "warning", "mensagens");
         return
     }
 
     var params = {
-        spreadsheetId: '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY',
+        spreadsheetId: SPREADSHEETID,
         range: spreadsheet_range,
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
@@ -253,12 +258,12 @@ async function addActivity() {
         request = await gapi.client.sheets.spreadsheets.values.append(params, valueRangeBody).then((res) => {
             document.getElementById("add_activity").reset();
             if (res.result)
-                create_alert(`<strong>${res.result.updates.updatedRange}</strong> Dados foram adicionados na planinha com sucesso`, "success");
+                create_alert(`<strong>${res.result.updates.updatedRange}</strong> Dados foram adicionados na planinha com sucesso`, "success", "mensagens");
         });
         await getRunningData(spreadsheet_range);
 
     } catch (err) {
-        create_alert(`Dados não foram adicionados na planilha.`, "danger");
+        create_alert(`Dados não foram adicionados na planilha.`, "danger", "mensagens");
         return;
     }
 
@@ -278,7 +283,7 @@ async function clearActivity(line_number) {
 
     // Evita que um usuário dele dados de outro usuário
     if (user_of_data != user_name) {
-        create_alert(`<strong>OPS!</strong> Você não tem permissão para apagar dados de ${user_of_data}`, "danger");
+        create_alert(`<strong>OPS!</strong> Você não tem permissão para apagar dados de ${user_of_data}`, "danger", "mensagens");
         return
     }
 
@@ -287,7 +292,7 @@ async function clearActivity(line_number) {
 
 
     var params = {
-        spreadsheetId: '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY',
+        spreadsheetId: SPREADSHEETID,
         range: spreadsheet_range_to_clear,
     };
 
@@ -300,12 +305,120 @@ async function clearActivity(line_number) {
         request = await gapi.client.sheets.spreadsheets.values.clear(params, clearValuesRequestBody).then((res) => {
 
             if (res.result)
-                create_alert(`<strong>${res.result.clearedRange}</strong> Dados removidos com sucesso`, "warning");
+                create_alert(`<strong>${res.result.clearedRange}</strong> Dados removidos com sucesso`, "warning", "mensagens");
         });
         await getRunningData(spreadsheet_range);
 
     } catch (err) {
-        create_alert(`Erro ao tentar remover dados.`, "danger");
+        create_alert(`Erro ao tentar remover dados.`, "danger", "mensagens");
+        return;
+    }
+
+}
+
+async function getActivityByLine(line_number) {
+
+    var spreadsheet_range;
+
+    // Captura o usuário logado e o usuários cujos dados estão sendo exibidos
+    var user_of_data = $("#monitoramento span").html();
+    var user_name = $("#user_name").html().split(" ")[0]
+
+    console.log("Data from: "+ user_of_data + " Viewed by: " + user_name)
+
+    spreadsheet_range = `${user_of_data}!A${line_number}:J${line_number}`;
+
+    var params = {
+        spreadsheetId: SPREADSHEETID,
+        range: spreadsheet_range
+    };
+
+    try {
+
+        await gapi.client.sheets.spreadsheets.values.get(params).then((res) => {
+            return res.result.values
+            // console.log(res.result);
+        });
+
+    } catch (err) {
+        console.error(err.message)
+        return;
+    }
+
+}
+
+async function updateActivityByLine(line_number) {
+
+    // Captura o usuário logado e o usuários cujos dados estão sendo exibidos
+    var user_of_data = $("#monitoramento span").html();
+    var user_name = $("#user_name").html().split(" ")[0]
+
+    console.log("Data from: "+ user_of_data + " Viewed by: " + user_name)
+
+    // Evita que um usuário dele dados de outro usuário
+    if (user_of_data != user_name && TYPE != 'dev') {
+        create_alert(`<strong>OPS!</strong> Você não tem permissão para atualizar os dados de ${user_of_data}`, "danger", "mensagens");
+        return
+    }
+
+    let date = $('#update_inputDate').val();
+    let distance = $('#update_inputDistancia').val();
+    let minutes = $('#update_inputMinutos').val();
+    let secondes = $('#update_inputSegundos').val();
+    let elevation = $('#update_inputElevacao').val()
+    let time = $('#update_inputHorario').val();
+    let type = $('#update_inputTipo').val();
+    let place = $('#update_inputLocal').val();
+
+    if (!date || !distance || !minutes || !secondes || !elevation || !time || !type || !place) {
+        create_alert(`<strong>OPS!</strong> Preencha todos os campos da atividade.`, "warning", "mensagens_modal", false);
+        return
+    }
+
+    var spreadsheet_range = `${user_of_data}!A2:J`;
+    var spreadsheet_range_update = `${user_of_data}!A${line_number}:J${line_number}`;
+
+    var params = {
+        spreadsheetId: SPREADSHEETID,
+        range: spreadsheet_range_update,
+        valueInputOption: 'RAW'
+    };
+
+    var valueRangeBody = {
+        "values": [
+            [
+                date,
+                parseFloat(distance),
+                parseInt(minutes),
+                parseInt(secondes),
+                parseInt(elevation),
+                time,
+                getPace(distance, minutes, secondes).pace,
+                getPace(distance, minutes, secondes).pace_f,
+                type,
+                place
+            ]
+        ]
+      };
+
+    console.log(valueRangeBody)
+    
+
+    try {
+
+        await gapi.client.sheets.spreadsheets.values.update(params, valueRangeBody).then((res) => {
+            if (res.result){
+                console.log(res.result)
+                create_alert(`<strong>${res.result.updatedRange}</strong> Dados atualizados com sucesso`, "success", "mensagens");
+
+                $("#updateModal").modal('hide');
+            }
+        });
+
+        await getRunningData(spreadsheet_range);
+
+    } catch (err) {
+        console.error(err.message)
         return;
     }
 
@@ -334,10 +447,10 @@ if (TYPE == 'dev') {
         .then((json) => {
             console.log(json)
 
-            values = json.carol.values
+            values = json.altino.values
 
             $("#user_altino").show()
-            $("#user_name").html("Carol")
+            $("#user_name").html("Altino")
 
             create_chart(values, 12, 'Check')
             treinos_por_local(values)
@@ -431,20 +544,32 @@ function create_list(dados) {
         var html = `<tr class="pt-3">
                       <td class="pt-3">${convert_date(element[0])}</td>
                       <td class="pt-3">${element[1]} km</td>
-                      <td class="pt-3">${element[2]}min ${element[3]}seg</td>
+                      <td class="pt-3">${element[2]}:${element[3]}</td>
                       <td class="pt-3">${element[7]}/km</td>
                       <td class="pt-3">${tipo}</td>
                       <td class="pt-3">${element[9]}</td>
                       <td class="pt-3">
+                        <a href="#" data-bs-toggle="modal" 
+                            data-bs-target="#updateModal" 
+                            data-bs-whatever="${spreadsheet_line}"
+                            data-activity-date="${element[0]}"
+                            data-activity-distance="${element[1]}"
+                            data-activity-minutes="${element[2]}"
+                            data-activity-seconds="${element[3]}"
+                            data-activity-elevation="${element[4]}"
+                            data-activity-time="${element[5]}"
+                            data-activity-type="${element[8]}"
+                            data-activity-place="${element[9]}"><i class="bi bi-pencil-square"></i></a>
+                        &nbsp;
                         <a href="#" data-bs-toggle="modal" 
                             data-bs-target="#confirmClearModal" 
                             data-bs-whatever="${spreadsheet_line}"
                             data-activity-date="${convert_date(element[0])}"
                             data-activity-place="${element[9]}"
                             data-activity-time="${element[5]}"
-                            data-activity-distance="${element[1]}">
-                            <i class="bi bi-trash3-fill"></i> 
-                        </a>
+                            data-activity-distance="${element[1]}"><i class="bi bi-trash3-fill"></i></a>
+                        &nbsp;
+                        <a href="#"><i class="bi bi-eye-fill"></i></a>
                       </td>
                     </tr>`
         $("tbody").append(html);
@@ -817,13 +942,14 @@ function create_chart(dados, meta_value, tipo_treino) {
         mode: 'lines',
         line: {
             width: 3,
-            shape: 'spline'
+            shape: 'spline', 
+            color: '#fb851e'
         },
         name: 'meta',
         hovertemplate: 'tempo: %{y:.0f}min<extra></extra>',
     };
 
-    var data = [treinos, meta];
+    var data = [meta, treinos];
 
     var layout = {
 
@@ -1066,14 +1192,18 @@ function treinos_por_tipo_bubble(dados) {
     });
 }
 
-function create_alert(text, color) {
+function create_alert(text, color, element_id, scrollTo = true) {
 
     let html = `<div class="alert alert-${color} alert-dismissible fade show" role="alert">
                     ${text}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>`
 
-    $(".mensagens").html(html)
+    $(`#${element_id}`).html(html);
+
+    if (scrollTo){
+        scrollUp()
+    }
 
 }
 
@@ -1102,10 +1232,55 @@ confirmClearModal.addEventListener('show.bs.modal', event => {
                              </br>${act_place}`
 })
 
-confirmClearModal.addEventListener('hidden.bs.modal', event => {
-    $("html, body").animate({
-        scrollTop: 0
-    }, "fast");
+const updateModal = document.getElementById('updateModal')
+updateModal.addEventListener('show.bs.modal', event => {
+
+    const button = event.relatedTarget
+
+    const activity_line = button.getAttribute('data-bs-whatever')
+    const act_date = button.getAttribute('data-activity-date')
+    const act_distance = button.getAttribute('data-activity-distance')
+    const act_minutes = button.getAttribute('data-activity-minutes')
+    const act_seconds = button.getAttribute('data-activity-seconds')
+    const act_elevation = button.getAttribute('data-activity-elevation')
+    const act_time = button.getAttribute('data-activity-time')
+    const act_type = button.getAttribute('data-activity-type')
+    const act_place = button.getAttribute('data-activity-place')
+
+    var horario;
+    var hora = act_time.split(':')[0];
+    var minutos = act_time.split(':')[1];
+
+    if (hora.length == 1)
+        hora = "0"+ hora;
+    if (minutos.length == 1)
+        minutos = "0"+minutos
+
+    horario = hora+":"+minutos
+
+    const modalTitle = updateModal.querySelector('#updateModal .modal-title')
+    const formUpdateDate = updateModal.querySelector('#update_inputDate')
+    const formUpdateDistance = updateModal.querySelector('#update_inputDistancia')
+    const formUpdateMinutes = updateModal.querySelector('#update_inputMinutos')
+    const formUpdateSeconds = updateModal.querySelector('#update_inputSegundos')
+    const formUpdateElevation = updateModal.querySelector('#update_inputElevacao')
+    const formUpdateTime = updateModal.querySelector('#update_inputHorario')
+    const formUpdateType = updateModal.querySelector(`#update_inputTipo option[value=${act_type}]`)
+    const formUpdatePlace = updateModal.querySelector('#update_inputLocal')
+    const modalUpdateButton = updateModal.querySelector('#atualizar')
+    
+    modalTitle.textContent = `Atualizando a Atividade Nº ${parseInt(activity_line) - 1}`
+    formUpdateDate.value = act_date
+    formUpdateDistance.value = act_distance
+    formUpdateMinutes.value = act_minutes
+    formUpdateSeconds.value = act_seconds
+    formUpdateElevation.value = act_elevation
+    formUpdateTime.value = horario
+    formUpdatePlace.value = act_place
+    formUpdateType.selected = true;
+
+    modalUpdateButton.setAttribute("onclick", `updateActivityByLine(${parseInt(activity_line)})`)
+
 })
 
 const elem = document.querySelector('#inputDate');
@@ -1114,3 +1289,16 @@ const datepicker = new Datepicker(elem, {
     language: 'pt-BR',
     autohide: true,
 });
+
+const updateDate = document.querySelector('#update_inputDate');
+const updatedatepicker = new Datepicker(updateDate, {
+    buttonClass: 'btn',
+    language: 'pt-BR',
+    autohide: true,
+});
+
+function scrollUp(){
+    $("html, body").animate({
+        scrollTop: 0
+    }, "fast");
+}

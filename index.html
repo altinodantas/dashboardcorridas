@@ -77,12 +77,11 @@
 
   <div class="padding_topo"></div>
 
-
   <div class="container">
     <div id="content">
     </div>
 
-    <div class="mensagens"></div>
+    <div id="mensagens"></div>
 
     <div class="block">
       <a class="anchor" id="add_anchor"></a>
@@ -321,7 +320,7 @@
                   <th scope="col"><i class="bi bi-watch"></i> Rítimo</th>
                   <th scope="col"><i class="bi bi-circle-fill"></i> Tipo</th>
                   <th scope="col"><i class="bi bi-geo-alt-fill"></i> Local</th>
-                  <th scope="col"><i class="bi bi-gear-fill"></i></th>
+                  <th scope="col"><i class="bi bi-gear-fill"></i> Opções</th>
                 </tr>
               </thead>
               <tbody>
@@ -352,6 +351,94 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
           <button type="button" class="btn btn-danger" id="apagar" data-bs-dismiss="modal">Apagar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="updateModalLabel"></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div id="mensagens_modal"></div>
+
+          <form class="" id="update_activity">
+            <div class="p-2">
+              <div class="row g-2 align-items-end">
+  
+                <div class="col-xl col-lg-3 col-4 col-sm-3">
+                  <label for="update_inputDate" class="form-label">Data:</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="update_inputDate"  readonly required autocomplete="off">
+                    <span class="input-group-text"><i class="bi bi-calendar-check"></i></span>
+                  </div>
+  
+                </div>
+                <div class="col-xl col-lg-3 col-4 col-sm-3">
+                  <label for="update_inputDistancia" class="form-label">Distância:</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="update_inputDistancia" required>
+                    <span class="input-group-text">km</span>
+                  </div>
+                </div>
+                <div class="col-xl col-lg-3 col-4 col-sm-3">
+                  <label for="update_inputMinutos" class="form-label">Minutos:</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="update_inputMinutos" required>
+                    <span class="input-group-text">min</span>
+                  </div>
+                </div>
+                <div class="col-xl col-lg-3 col-4 col-sm-3">
+                  <label for="update_inputSegundos" class="form-label">Segundos:</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="update_inputSegundos" required>
+                    <span class="input-group-text">seg</span>
+                  </div>
+                </div>
+                <div class="col-lg col-4 col-sm-3">
+                  <label for="update_inputElevacao" class="form-label">Elevação:</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="update_inputElevacao" required>
+                    <span class="input-group-text">m</span>
+                  </div>
+                </div>
+                <div class="col-lg col-4 col-sm-3">
+                  <label for="update_inputHorario" class="form-label">Horário:</label>
+                  <input type="time" class="form-control" id="update_inputHorario" required>
+                </div>
+                <div class="col-lg col-4 col-sm-3">
+                  <label for="update_inputTipo" class="form-label">Tipo:</label>
+                  <select class="form-select" aria-label="Tipo de treino" id="update_inputTipo" required>
+                    <option value="" selected>Selecione</option>
+                    <option value="Livre">Livre</option>
+                    <option value="Intervalado">Intervalado</option>
+                    <option value="Prova">Prova</option>
+                    <option value="Subida">Subida</option>
+                    <option value="Tiro">Tiro</option>
+                    <option value="Check">Check</option>
+                    <option value="Velocidade">Velocidade</option>
+                  </select>
+                </div>
+                <div class="col-lg col-4 col-sm-3">
+                  <label for="update_inputLocal" class="form-label">Local:</label>
+                  <input type="text" class="form-control" id="update_inputLocal" placeholder="Perto de Casa" required>
+                </div>
+  
+              </div>
+            </div>
+          </form>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-warning" id="atualizar">Atualizar</button>
         </div>
       </div>
     </div>
