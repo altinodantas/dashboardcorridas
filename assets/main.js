@@ -336,8 +336,45 @@ async function getActivityByLine(line_number) {
     try {
 
         await gapi.client.sheets.spreadsheets.values.get(params).then((res) => {
-            return res.result.values
-            // console.log(res.result);
+
+
+            console.log(res.result);
+
+            let html = `<tr>
+                            <th scope="row">Data</th>
+                            <td><i class="bi bi-calendar-check-fill"></i> ${convert_date(res.result.values[0][0])}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Distância</th>
+                            <td><i class="bi bi-flag-fill"></i> ${res.result.values[0][1]}km</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Tempo</th>
+                            <td><i class="bi bi-stopwatch-fill"></i> ${res.result.values[0][2]}:${res.result.values[0][3]}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Elevação</th>
+                            <td><i class="bi bi-activity"></i> ${res.result.values[0][4]} metros</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Horário</th>
+                            <td><i class="bi bi-clock-fill"></i> ${res.result.values[0][5]}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Pace</th>
+                            <td><i class="bi bi-watch"></i> ${res.result.values[0][7]}/km</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Tipo</th>
+                            <td><i class="bi bi-circle-fill"></i> ${res.result.values[0][8]}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Local</th>
+                            <td><i class="bi bi-geo-alt-fill"></i> ${res.result.values[0][9]}</td>
+                        </tr>`  
+
+            $("#viewerModal table tbody").html(html)
+
         });
 
     } catch (err) {
@@ -527,7 +564,7 @@ function create_list(dados) {
 
     var reverse_values = dados.slice().reverse();
 
-    $("tbody").html("");
+    $("#tabela_lista tbody").html("");
 
     reverse_values.forEach((element, index) => {
 
@@ -569,10 +606,12 @@ function create_list(dados) {
                             data-activity-time="${element[5]}"
                             data-activity-distance="${element[1]}"><i class="bi bi-trash3-fill"></i></a>
                         &nbsp;
-                        <a href="#"><i class="bi bi-eye-fill"></i></a>
+                        <a href="#" data-bs-toggle="modal" 
+                            data-bs-target="#viewerModal"
+                            data-bs-whatever="${spreadsheet_line}"><i class="bi bi-eye-fill"></i></a>
                       </td>
                     </tr>`
-        $("tbody").append(html);
+        $("#tabela_lista tbody").append(html);
 
     })
 }
@@ -1206,6 +1245,19 @@ function create_alert(text, color, element_id, scrollTo = true) {
     }
 
 }
+
+const viewerModal = document.getElementById('viewerModal')
+viewerModal.addEventListener('show.bs.modal', event => {
+
+    const button = event.relatedTarget
+
+    const activity_line = button.getAttribute('data-bs-whatever')
+
+    getActivityByLine(activity_line)
+
+    const modalTitle = viewerModal.querySelector('.modal-title')
+    modalTitle.textContent = `Atividade #${parseInt(activity_line) - 1}`                            
+})
 
 const confirmClearModal = document.getElementById('confirmClearModal')
 confirmClearModal.addEventListener('show.bs.modal', event => {

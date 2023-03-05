@@ -44,6 +44,11 @@ body {
 
 }
 
+.modal-header {
+    background-color: #6639e9;
+    color: #fafafa;
+}
+
 #mensagens {
     margin-top: 10px;
 }

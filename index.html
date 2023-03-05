@@ -315,8 +315,8 @@
               <thead>
                 <tr>
                   <th scope="col"><i class="bi bi-calendar-check-fill"></i> Data</th>
-                  <th scope="col"><i class="bi bi-caret-right-fill"></i> Distância</th>
-                  <th scope="col"><i class="bi bi-clock-fill"></i> Tempo</th>
+                  <th scope="col"><i class="bi bi-flag-fill"></i> Distância</th>
+                  <th scope="col"><i class="bi bi-stopwatch-fill"></i> Tempo</th>
                   <th scope="col"><i class="bi bi-watch"></i> Rítimo</th>
                   <th scope="col"><i class="bi bi-circle-fill"></i> Tipo</th>
                   <th scope="col"><i class="bi bi-geo-alt-fill"></i> Local</th>
@@ -351,6 +351,32 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
           <button type="button" class="btn btn-danger" id="apagar" data-bs-dismiss="modal">Apagar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="viewerModal" tabindex="-1" aria-labelledby="viewerModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="viewerModalLabel"></h1>
+          <div data-bs-theme="dark">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body">
+
+          <table class="table table-striped">
+            <tbody>
+              
+            </tbody>
+          </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>
     </div>
