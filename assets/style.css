@@ -149,8 +149,14 @@ a.anchor {
     text-align: right;
 }
 
-.resumo_ultimo {
+.resumo_ultimo, .resumo_melhor {
     text-align: left;
+}
+
+#resumo_melhor_box {display: none}
+
+#resumo_melhor_button, #resumo_ultimo_button{
+    --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
 }
 
 .resumo_local_icon {
@@ -159,24 +165,25 @@ a.anchor {
     margin-top: -10px;
 }
 
-.resumo_local {
+.resumo_local, .resumo_local_melhor {
     font-size: 1.2rem;
     font-weight: 300;
     margin: 0;
+    margin-bottom: -5px;
 }
 
-.resumo_pace {
+.resumo_pace, .resumo_pace_melhor {
     font-size: 1.8rem;
     font-weight: bolder;
     margin: -8px;
 }
 
-.resumo_pace span {
+.resumo_pace span, .resumo_pace_melhor span {
     font-size: 1rem;
     font-weight: 200;
 }
 
-.resumo_distancia {
+.resumo_distancia, .resumo_distancia_melhor{
     font-size: 4rem;
     font-weight: bolder;
     margin: -8px;
@@ -184,12 +191,12 @@ a.anchor {
     margin-bottom: -25px;
 }
 
-.resumo_distancia span {
+.resumo_distancia span, .resumo_distancia_melhor span {
     font-size: 1.2rem;
     font-weight: 200;
 }
 
-.resumo_horario {
+.resumo_horario, .resumo_horario_melhor {
     font-size: 1.8rem;
     font-weight: bolder;
     margin: -8px;

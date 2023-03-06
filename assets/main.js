@@ -543,6 +543,18 @@ $(document).ready(function () {
     $('a.close-link').on('click', function () {
         $('.navbar-collapse').collapse('hide');
     });
+
+
+    $("#resumo_melhor_button").on('click', function() {
+        $("#resumo_ultimo_box").show();
+        $("#resumo_melhor_box").hide();
+    })
+
+    $("#resumo_ultimo_button").on('click', function() {
+        $("#resumo_melhor_box").show();
+        $("#resumo_ultimo_box").hide();
+    })
+
 })
 
 function create_summary(dados) {
@@ -559,6 +571,12 @@ function create_summary(dados) {
     $('.resumo_pace').html(info.ultimo_treino.pace + "<span>/km</span>")
     $('.resumo_distancia').html(info.ultimo_treino.distancia + "<span>km</span>")
     $('.resumo_horario').html(info.ultimo_treino.hora)
+
+    $('#resumo_data_melhor').html(convert_date(info.melhor_treino.data))
+    $('.resumo_local_melhor').html(info.melhor_treino.local)
+    $('.resumo_pace_melhor').html(info.melhor_treino.pace + "<span>/km</span>")
+    $('.resumo_distancia_melhor').html(info.melhor_treino.distancia + "<span>km</span>")
+    $('.resumo_horario_melhor').html(info.melhor_treino.hora)
 
 }
 
