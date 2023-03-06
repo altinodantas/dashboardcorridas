@@ -732,20 +732,31 @@ function create_chart_pace(dados) {
 
     let dias = []
     let pace = []
-    let minutes = []
-    let texto = []
     let avg_values = []
     let sum_paces = 0
 
+    let data_object = {}
+
     result.forEach(element => {
-        pace.push(parseFloat(element[6]));
-        dias.push(element[0]);
-        // minutes.push(parseInt(element[2]) + parseInt(element[3]) / 60);
-        texto.push(`${convert_date(element[0])}<br><b>Tempo total:</b> ${element[2]}min${element[3]}seg<br>
-<b>Pace:</b> ${element[7]}/km<br>
-<b>Distância: </b>${element[1]} km`);
-        sum_paces += parseFloat(element[6]);
+
+        var distancia = parseInt(element[1])
+        var text = `${convert_date(element[0])}<br><b>Tempo total:</b> ${element[2]}min${element[3]}seg<br><b>Pace:</b> ${element[7]}/km<br>
+<b>Distância: </b>${element[1]} km`
+
+        var dia_ = element[0].split("/")
+        var dia = dia_[2] + "-" + dia_[1] + "-" + dia_[0]
+
+        if (distancia in data_object){
+            data_object[distancia].dias.push(dia);
+            data_object[distancia].pace.push(parseFloat(element[6]));
+            data_object[distancia].texto.push(text);
+        } else {
+            data_object[distancia] = {"dias":[dia], "pace":[parseFloat(element[6])], "texto":[text]};
+        }
+
     })
+
+    console.log(data_object)
 
     var avg = sum_paces / dias.length
 
@@ -755,45 +766,33 @@ function create_chart_pace(dados) {
         avg_values.push(avg)
     }
 
+    let datum = []
 
-    var desempenho = '';
-    var desempenho_cor = '';
+    Object.keys(data_object).forEach((element, i) => {
 
+        // garante que apenas distâncias com mais de um registro serão consideradas
+        if (data_object[element].dias.length > 1){
+            datum.push({
+                x: data_object[element].dias,
+                y: data_object[element].pace,
+                type: 'scatter',
+                mode: 'lines+markers',
+                marker: {
+                    size: 8
+                },
+                line: {
+                    width: 3,
+                    shape: 'spline',
+                },
+                name: element + "km",
+                hovertemplate: '%{text}<extra></extra>',
+                text: data_object[element].texto
+            })
+        }
 
-    var treinos = {
-        x: dias,
-        y: pace,
-        type: 'scatter',
-        mode: 'lines+markers',
-        marker: {
-            size: 8
-        },
-        line: {
-            width: 3,
-            shape: 'spline',
-            color: 'rgb(108, 54, 241)'
-        },
-        name: 'Pace',
-        hovertemplate: '%{text}<extra></extra>',
-        text: texto
-    };
+    })
 
-    var media = {
-        x: dias,
-        y: avg_values,
-        type: 'scatter',
-        mode: 'lines',
-        line: {
-            width: 3,
-            shape: 'spline',
-            color: '#ee8636',
-            dash: 'dot'
-        },
-        name: 'média',
-        hovertemplate: `Pace: ${pace_f}/km<extra></extra>`,
-    };
-
-    var data = [media, treinos];
+    var data = datum;
 
     var layout = {
 
@@ -811,7 +810,9 @@ function create_chart_pace(dados) {
             automargin: true,
             showgrid: false,
             tickcolor: '#000',
-            fixedrange: true
+            fixedrange: true,
+            type: 'date',
+            tickformat: '%d %b\n %Y'
         },
 
         showlegend: true,
