@@ -1,4 +1,12 @@
 # Dashboard | Corridas
-Simple dashboard for google sheet containing running logs
+Simple dashboard on running data log from a Google Spreadsheet
 
-![alt text](https://raw.githubusercontent.com/altinodantas/dashboardcorridas/main/assets/screenshot.png "Perceptron Example")
+![alt text](https://raw.githubusercontent.com/altinodantas/dashboardcorridas/main/assets/main-screenshot.png "Perceptron Example")
+
+## Technologies
+ - HTML5
+ - JavaScript
+ - JQuery
+ - Bootstrap 5
+ - Google API
+ 
