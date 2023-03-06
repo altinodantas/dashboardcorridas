@@ -147,10 +147,10 @@ async function getRunningData(data_range) {
     values = range.values.slice()
 
     if (data_range.split("!")[0] == 'Carol') {
-        create_chart(values, 12, 'Check');
+        create_chart_meta(values, 12, 'Check');
         $("#monitoramento span").html("Carol");
     } else {
-        create_chart(values, 25, 'Velocidade');
+        create_chart_meta(values, 24, 'Velocidade');
         $("#monitoramento span").html("Altino");
     }
 
@@ -482,22 +482,20 @@ if (TYPE == 'dev') {
     fetch('./assets/mock_data.json')
         .then((response) => response.json())
         .then((json) => {
-            console.log(json)
 
             values = json.altino.values
 
             $("#user_altino").show()
             $("#user_name").html("Altino")
+            $("#monitoramento span").html("Altino");
 
-            create_chart(values, 12, 'Check')
+            create_chart_meta(values, 24, 'Velocidade')
             treinos_por_local(values)
             treinos_por_distancias(values)
             treinos_por_tipo(values)
 
             create_summary(values)
             create_list(values)
-
-            console.log(get_general_info(values).melhor_treino)
 
 
         });
@@ -531,10 +529,14 @@ $(document).ready(function () {
             $('#check_plot').html("");
             create_chart_pace(values)
         } else {
-            if ($("#monitoramento span").html() == "Altino")
-                create_chart(values, 25, 'Velocidade')
-            else
-                create_chart(values, 12, 'Check')
+            if($(this).attr('id') == 'pace_tipo_radio'){
+                create_chart_pace_tipo(values)
+            }else {
+                if ($("#monitoramento span").html() == "Altino")
+                    create_chart_meta(values, 24, 'Velocidade')
+                else
+                    create_chart_meta(values, 12, 'Check')
+            }
         }
     });
 
@@ -756,8 +758,6 @@ function create_chart_pace(dados) {
 
     })
 
-    console.log(data_object)
-
     var avg = sum_paces / dias.length
 
     var pace_f = `${parseInt(avg / 60)}:${parseInt(avg % 60)}`
@@ -785,6 +785,114 @@ function create_chart_pace(dados) {
                     shape: 'spline',
                 },
                 name: element + "km",
+                hovertemplate: '%{text}<extra></extra>',
+                text: data_object[element].texto
+            })
+        }
+
+    })
+
+    var data = datum;
+
+    var layout = {
+
+        yaxis: {
+            autorange: true,
+            type: 'linear',
+            automargin: true,
+            title: {
+                text: 'Pace médio (seg)',
+                standoff: 20
+            },
+            fixedrange: true,
+        },
+        xaxis: {
+            automargin: true,
+            showgrid: false,
+            tickcolor: '#000',
+            fixedrange: true,
+            type: 'date',
+            tickformat: '%d %b\n %Y'
+        },
+
+        showlegend: true,
+        legend: {
+            orientation: 'h',
+            x: 0.35,
+            y: 1.1
+        },
+        margin: {
+            l: 70,
+            r: 50,
+            b: 50,
+            t: 50,
+            pad: 10
+        },
+        title: false,
+
+    };
+
+    Plotly.newPlot('check_plot', data, layout, {
+        displayModeBar: false
+    });
+
+}
+
+function create_chart_pace_tipo(dados) {
+
+    var result = dados.slice(-30)
+
+    let dias = []
+    let pace = []
+    let avg_values = []
+    let sum_paces = 0
+
+    let data_object = {}
+
+    result.forEach(element => {
+
+        var tipo = element[8]
+        var text = `${convert_date(element[0])}<br><b>Tempo total:</b> ${element[2]}min${element[3]}seg<br><b>Pace:</b> ${element[7]}/km<br>
+<b>Distância: </b>${element[1]} km`
+
+        var dia_ = element[0].split("/")
+        var dia = dia_[2] + "-" + dia_[1] + "-" + dia_[0]
+
+        if (tipo in data_object){
+            data_object[tipo].dias.push(dia);
+            data_object[tipo].pace.push(parseFloat(element[6]));
+            data_object[tipo].texto.push(text);
+        } else {
+            data_object[tipo] = {"dias":[dia], "pace":[parseFloat(element[6])], "texto":[text]};
+        }
+
+    })
+
+    var avg = sum_paces / dias.length
+
+    for (var i = 0; i < pace.length; i++) {
+        avg_values.push(avg)
+    }
+
+    let datum = []
+
+    Object.keys(data_object).forEach((element, i) => {
+
+        // garante que apenas distâncias com mais de um registro serão consideradas
+        if (data_object[element].dias.length > 1){
+            datum.push({
+                x: data_object[element].dias,
+                y: data_object[element].pace,
+                type: 'scatter',
+                mode: 'lines+markers',
+                marker: {
+                    size: 8
+                },
+                line: {
+                    width: 3,
+                    shape: 'spline',
+                },
+                name: element,
                 hovertemplate: '%{text}<extra></extra>',
                 text: data_object[element].texto
             })
@@ -916,7 +1024,7 @@ function treinos_por_distancias(dados) {
 
 }
 
-function create_chart(dados, meta_value, tipo_treino) {
+function create_chart_meta(dados, meta_value, tipo_treino) {
 
     var result = dados.filter(element => element[8] == tipo_treino)
 
