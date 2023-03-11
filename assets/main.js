@@ -2,14 +2,14 @@ const TYPE = 'prod';
 let CLIENT_ID = '';
 let SPREADSHEETID = '';
 
-if (TYPE == 'test'){ 
+if (TYPE == 'test') {
     CLIENT_ID = "192707284225-74pk61g5bnkkh5biec579v5gasel67us.apps.googleusercontent.com"; // local
     SPREADSHEETID = '1KmHEKKpPAAt5Unbu0S_p2cQIpb6SgkmiO_Dfdf4eHDQ' // planilha de teste
 }
-if (TYPE == 'prod'){ 
+if (TYPE == 'prod') {
     CLIENT_ID = "192707284225-tsjg3e79vl6papuv6okjla6ntapc7hsa.apps.googleusercontent.com"; // github
     SPREADSHEETID = '1ZNGbcnNVWKgk0Q2Fi-WzOq4eBF97uUl2uMWPECaiNaY' // 
-} 
+}
 
 
 const API_KEY = 'AIzaSyB2Mf_OmGx2FoJH4wRAJkLr05BJ9r7IhvY';
@@ -324,7 +324,7 @@ async function getActivityByLine(line_number) {
     var user_of_data = $("#monitoramento span").html();
     var user_name = $("#user_name").html().split(" ")[0]
 
-    console.log("Data from: "+ user_of_data + " Viewed by: " + user_name)
+    console.log("Data from: " + user_of_data + " Viewed by: " + user_name)
 
     spreadsheet_range = `${user_of_data}!A${line_number}:J${line_number}`;
 
@@ -371,7 +371,7 @@ async function getActivityByLine(line_number) {
                         <tr>
                             <th scope="row">Local</th>
                             <td><i class="bi bi-geo-alt-fill"></i> ${res.result.values[0][9]}</td>
-                        </tr>`  
+                        </tr>`
 
             $("#viewerModal table tbody").html(html)
 
@@ -390,7 +390,7 @@ async function updateActivityByLine(line_number) {
     var user_of_data = $("#monitoramento span").html();
     var user_name = $("#user_name").html().split(" ")[0]
 
-    console.log("Data from: "+ user_of_data + " Viewed by: " + user_name)
+    console.log("Data from: " + user_of_data + " Viewed by: " + user_name)
 
     // Evita que um usuário dele dados de outro usuário
     if (user_of_data != user_name && TYPE != 'dev') {
@@ -436,15 +436,15 @@ async function updateActivityByLine(line_number) {
                 place
             ]
         ]
-      };
+    };
 
     console.log(valueRangeBody)
-    
+
 
     try {
 
         await gapi.client.sheets.spreadsheets.values.update(params, valueRangeBody).then((res) => {
-            if (res.result){
+            if (res.result) {
                 console.log(res.result)
                 create_alert(`<strong>${res.result.updatedRange}</strong> Dados atualizados com sucesso`, "success", "mensagens");
 
@@ -529,9 +529,9 @@ $(document).ready(function () {
             $('#check_plot').html("");
             create_chart_pace(values)
         } else {
-            if($(this).attr('id') == 'pace_tipo_radio'){
+            if ($(this).attr('id') == 'pace_tipo_radio') {
                 create_chart_pace_tipo(values)
-            }else {
+            } else {
                 if ($("#monitoramento span").html() == "Altino")
                     create_chart_meta(values, 24, 'Velocidade')
                 else
@@ -545,12 +545,12 @@ $(document).ready(function () {
     });
 
 
-    $("#resumo_melhor_button").on('click', function() {
+    $("#resumo_melhor_button").on('click', function () {
         $("#resumo_ultimo_box").show();
         $("#resumo_melhor_box").hide();
     })
 
-    $("#resumo_ultimo_button").on('click', function() {
+    $("#resumo_ultimo_button").on('click', function () {
         $("#resumo_melhor_box").show();
         $("#resumo_ultimo_box").hide();
     })
@@ -669,13 +669,13 @@ function get_general_info(dados) {
 
         // look for the best pace
 
-        if(parseFloat(element[6]) < parseFloat(melhor_treino.pace_seg)){
-            melhor_treino.data  = element[0];
+        if (parseFloat(element[6]) < parseFloat(melhor_treino.pace_seg)) {
+            melhor_treino.data = element[0];
             melhor_treino.local = element[9];
-            melhor_treino.pace  = element[7];
+            melhor_treino.pace = element[7];
             melhor_treino.pace_seg = element[6];
             melhor_treino.distancia = element[1];
-            melhor_treino.hora  = element[5];
+            melhor_treino.hora = element[5];
         }
     })
 
@@ -760,18 +760,22 @@ function create_chart_pace(dados) {
     result.forEach(element => {
 
         var distancia = parseInt(element[1])
-        var text = `${convert_date(element[0])}<br><b>Tempo total:</b> ${element[2]}min${element[3]}seg<br><b>Pace:</b> ${element[7]}/km<br>
+        var text = `${convert_date(element[0])}<br><b>Tempo total:</b> ${element[2]}:${element[3]}<br><b>Pace:</b> ${element[7]}/km<br>
 <b>Distância: </b>${element[1]} km`
 
         var dia_ = element[0].split("/")
         var dia = dia_[2] + "-" + dia_[1] + "-" + dia_[0]
 
-        if (distancia in data_object){
+        if (distancia in data_object) {
             data_object[distancia].dias.push(dia);
             data_object[distancia].pace.push(parseFloat(element[6]));
             data_object[distancia].texto.push(text);
         } else {
-            data_object[distancia] = {"dias":[dia], "pace":[parseFloat(element[6])], "texto":[text]};
+            data_object[distancia] = {
+                "dias": [dia],
+                "pace": [parseFloat(element[6])],
+                "texto": [text]
+            };
         }
 
     })
@@ -789,7 +793,7 @@ function create_chart_pace(dados) {
     Object.keys(data_object).forEach((element, i) => {
 
         // garante que apenas distâncias com mais de um registro serão consideradas
-        if (data_object[element].dias.length > 1){
+        if (data_object[element].dias.length > 1) {
             datum.push({
                 x: data_object[element].dias,
                 y: data_object[element].pace,
@@ -870,18 +874,22 @@ function create_chart_pace_tipo(dados) {
     result.forEach(element => {
 
         var tipo = element[8]
-        var text = `${convert_date(element[0])}<br><b>Tempo total:</b> ${element[2]}min${element[3]}seg<br><b>Pace:</b> ${element[7]}/km<br>
+        var text = `${convert_date(element[0])}<br><b>Tempo total:</b> ${element[2]}:${element[3]}<br><b>Pace:</b> ${element[7]}/km<br>
 <b>Distância: </b>${element[1]} km`
 
         var dia_ = element[0].split("/")
         var dia = dia_[2] + "-" + dia_[1] + "-" + dia_[0]
 
-        if (tipo in data_object){
+        if (tipo in data_object) {
             data_object[tipo].dias.push(dia);
             data_object[tipo].pace.push(parseFloat(element[6]));
             data_object[tipo].texto.push(text);
         } else {
-            data_object[tipo] = {"dias":[dia], "pace":[parseFloat(element[6])], "texto":[text]};
+            data_object[tipo] = {
+                "dias": [dia],
+                "pace": [parseFloat(element[6])],
+                "texto": [text]
+            };
         }
 
     })
@@ -897,7 +905,7 @@ function create_chart_pace_tipo(dados) {
     Object.keys(data_object).forEach((element, i) => {
 
         // garante que apenas distâncias com mais de um registro serão consideradas
-        if (data_object[element].dias.length > 1){
+        if (data_object[element].dias.length > 1) {
             datum.push({
                 x: data_object[element].dias,
                 y: data_object[element].pace,
@@ -971,31 +979,40 @@ function treinos_por_distancias(dados) {
     dados.forEach(element => {
 
         let tipo_treino = element[8];
+        var texto = `${convert_date(element[0])}<br><b>Tempo total:</b> ${element[2]}:${element[3]}<br><b>Pace:</b> ${element[7]}/km<br>
+<b>Distância: </b>${element[1]} km`
 
         if (tipo_treino in tipos_treino) {
 
             tipos_treino[tipo_treino].kms.push(parseInt(element[1]).toString() + "km");
             tipos_treino[tipo_treino].paces.push(parseFloat(element[6]));
-            tipos_treino[tipo_treino].paces_f.push(element[7] + "/km");
+            tipos_treino[tipo_treino].text.push(texto);
 
         } else {
             let kms = [parseInt(element[1]).toString() + "km"];
             let pace = [parseFloat(element[6])];
-            let pace_f = [element[7] + "/km"];
             tipos_treino[tipo_treino] = {
                 "kms": kms,
                 "paces": pace,
-                "paces_f": pace_f
+                "text": [texto]
             };
         }
 
     })
 
-    let colous = ['#fb851e', '#6639e9', '#6dae8d', '#0098d8', '#c81d7e', '#000']
+    let colous = {
+        'Livre': '#6639e9',
+        'Intervalado': '#0098d8',
+        'Subida': '#c81d7e',
+        'Tiro': '',
+        'Check': '#6dae8d',
+        'Velocidade': '#fb851e',
+        'Prova': '#000'
+    }
 
     let datum = []
 
-    Object.keys(tipos_treino).forEach((element, i) => {
+    Object.keys(tipos_treino).forEach((element) => {
 
         datum.push({
             x: tipos_treino[element].kms,
@@ -1005,10 +1022,10 @@ function treinos_por_distancias(dados) {
             name: element,
             marker: {
                 size: 12,
-                color: colous[i]
+                color: colous[element]
             },
             hovertemplate: ' %{text}<extra></extra>',
-            text: tipos_treino[element].paces_f,
+            text: tipos_treino[element].text,
         })
 
     })
@@ -1056,7 +1073,7 @@ function create_chart_meta(dados, meta_value, tipo_treino) {
         y_.push(parseFloat(element[6]))
         x_.push(element[0])
         minutes.push(parseInt(element[2]) + parseInt(element[3]) / 60)
-        sec.push(element[2] + "min" + element[3] + "seg")
+        sec.push(element[2] + "min" + element[3] + "seg<br><b>Distância:</b> " + element[1] + "km")
     })
 
     for (var i = 0; i < result.length; i++) {
@@ -1097,7 +1114,7 @@ function create_chart_meta(dados, meta_value, tipo_treino) {
             color: 'rgb(108, 54, 241)'
         },
         name: 'Checkpoints',
-        hovertemplate: 'tempo: %{text}<extra></extra>',
+        hovertemplate: '<b>Tempo:</b> %{text}<extra></extra>',
         text: sec
     };
 
@@ -1108,11 +1125,11 @@ function create_chart_meta(dados, meta_value, tipo_treino) {
         mode: 'lines',
         line: {
             width: 3,
-            shape: 'spline', 
+            shape: 'spline',
             color: '#fb851e'
         },
         name: 'meta',
-        hovertemplate: 'tempo: %{y:.0f}min<extra></extra>',
+        hovertemplate: 'Tempo: %{y:.0f}min<extra></extra>',
     };
 
     var data = [meta, treinos];
@@ -1367,7 +1384,7 @@ function create_alert(text, color, element_id, scrollTo = true) {
 
     $(`#${element_id}`).html(html);
 
-    if (scrollTo){
+    if (scrollTo) {
         scrollUp()
     }
 
@@ -1383,7 +1400,7 @@ viewerModal.addEventListener('show.bs.modal', event => {
     getActivityByLine(activity_line)
 
     const modalTitle = viewerModal.querySelector('.modal-title')
-    modalTitle.textContent = `Atividade #${parseInt(activity_line) - 1}`                            
+    modalTitle.textContent = `Atividade #${parseInt(activity_line) - 1}`
 })
 
 const confirmClearModal = document.getElementById('confirmClearModal')
@@ -1431,11 +1448,11 @@ updateModal.addEventListener('show.bs.modal', event => {
     var minutos = act_time.split(':')[1];
 
     if (hora.length == 1)
-        hora = "0"+ hora;
+        hora = "0" + hora;
     if (minutos.length == 1)
-        minutos = "0"+minutos
+        minutos = "0" + minutos
 
-    horario = hora+":"+minutos
+    horario = hora + ":" + minutos
 
     const modalTitle = updateModal.querySelector('#updateModal .modal-title')
     const formUpdateDate = updateModal.querySelector('#update_inputDate')
@@ -1447,7 +1464,7 @@ updateModal.addEventListener('show.bs.modal', event => {
     const formUpdateType = updateModal.querySelector(`#update_inputTipo option[value=${act_type}]`)
     const formUpdatePlace = updateModal.querySelector('#update_inputLocal')
     const modalUpdateButton = updateModal.querySelector('#atualizar')
-    
+
     modalTitle.textContent = `Atualizando a Atividade Nº ${parseInt(activity_line) - 1}`
     formUpdateDate.value = act_date
     formUpdateDistance.value = act_distance
@@ -1476,7 +1493,7 @@ const updatedatepicker = new Datepicker(updateDate, {
     autohide: true,
 });
 
-function scrollUp(){
+function scrollUp() {
     $("html, body").animate({
         scrollTop: 0
     }, "fast");
