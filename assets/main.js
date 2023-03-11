@@ -975,6 +975,7 @@ function create_chart_pace_tipo(dados) {
 function treinos_por_distancias(dados) {
 
     let tipos_treino = {}
+    const distancias = new Set();
 
     dados.forEach(element => {
 
@@ -997,6 +998,8 @@ function treinos_por_distancias(dados) {
                 "text": [texto]
             };
         }
+
+        distancias.add(parseInt(element[1]))
 
     })
 
@@ -1030,6 +1033,17 @@ function treinos_por_distancias(dados) {
 
     })
 
+    let distancias_array = Array.from(distancias)
+    distancias_array = distancias_array.sort(function(a, b) {
+        return a - b;
+      })
+
+
+    let categoryarray = [];
+    distancias_array.forEach(element => {
+        categoryarray.push(element + "km")
+    })
+
     var layout = {
         yaxis: {
             automargin: true,
@@ -1037,7 +1051,9 @@ function treinos_por_distancias(dados) {
         },
         xaxis: {
             automargin: true,
-            fixedrange: true
+            fixedrange: true,
+            "categoryorder": "array",
+            "categoryarray": categoryarray
         },
         legend: {
             orientation: 'h',
